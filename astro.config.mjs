@@ -6,7 +6,7 @@ import react from '@astrojs/react';
 
 // https://astro.build/config
 export default defineConfig({
-  site: 'https://namatanvay.github.io',
+  site: 'https://namatanvay.github.io/portfolio',
   // Remove base for development - add it back when deploying
   // base: '/portfolio',
 

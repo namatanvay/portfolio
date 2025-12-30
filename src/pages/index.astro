@@ -1,0 +1,64 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import AnimatedHero from '../components/AnimatedHero';
+import TabSection from '../components/TabSection';
+---
+
+<Layout title="Tanvay Nama - Professional Photography & Videography">
+  <Navigation />
+
+  <!-- Animated Hero Section -->
+  <AnimatedHero client:load />
+
+  <!-- Tab-Based Content Section -->
+  <section id="content" class="section">
+    <div class="container">
+      <TabSection client:load />
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  :global(.text-gradient) {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  :global(.text-accent) {
+    color: var(--accent-primary);
+  }
+
+  :global(.text-light) {
+    color: var(--text-light);
+  }
+
+  :global(.text-muted) {
+    color: var(--text-muted);
+  }
+
+  :global(.bg-dark) {
+    background-color: var(--bg-dark);
+  }
+
+  :global(.bg-dark-elevated) {
+    background-color: var(--bg-dark-elevated);
+  }
+
+  :global(.bg-dark-card) {
+    background-color: var(--bg-dark-card);
+  }
+
+  :global(.bg-gradient-accent) {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  }
+
+  :global(.bg-accent) {
+    background-color: var(--accent-primary);
+  }
+</style>

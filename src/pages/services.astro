@@ -1,0 +1,171 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import AnimatedServices from '../components/AnimatedServices';
+
+const services = [
+  {
+    icon: 'fa-user-circle',
+    title: 'Portrait & Fashion Photography',
+    description: 'I work with individuals and brands to create portrait and fashion photography that tells a story.',
+    features: [
+      'Studio and outdoor sessions',
+      'Natural and creative lighting',
+      'Editorial and commercial fashion',
+      'Personal branding photography',
+      'High-resolution digital files'
+    ]
+  },
+  {
+    icon: 'fa-calendar-check',
+    title: 'Event Photography',
+    description: 'I document corporate events, conferences, and special occasions with attention to key moments and atmosphere.',
+    features: [
+      'Corporate events and conferences',
+      'Product launches',
+      'Professional networking events',
+      'Candid and composed shots',
+      'Quick delivery turnaround'
+    ]
+  },
+  {
+    icon: 'fa-utensils',
+    title: 'Food Photography',
+    description: 'I collaborate with restaurants, bars, and pubs to showcase their culinary offerings through appetizing imagery.',
+    features: [
+      'Menu photography',
+      'Beverage styling',
+      'Ambiance and interior shots',
+      'Social media content creation',
+      'Restaurant branding photography'
+    ]
+  },
+  {
+    icon: 'fa-plane',
+    title: 'Travel Photography',
+    description: 'I capture destinations, landscapes, and travel experiences through photography and videography.',
+    features: [
+      'Destination photography',
+      'Landscape and cityscapes',
+      'Travel vlogs and reels',
+      'Cultural documentation',
+      'Adventure photography'
+    ]
+  },
+  {
+    icon: 'fa-video',
+    title: 'Video Production',
+    description: 'I create video content for events, travel, and promotional purposes with professional editing and color grading.',
+    features: [
+      '4K video recording',
+      'Event coverage and highlights',
+      'Travel vlogs',
+      'Professional editing',
+      'Color grading and effects'
+    ]
+  },
+  {
+    icon: 'fa-edit',
+    title: 'Photo & Video Editing',
+    description: 'I provide post-production services including photo editing, color correction, and video editing.',
+    features: [
+      'Color correction and grading',
+      'Photo retouching',
+      'Video editing and assembly',
+      'Audio synchronization',
+      'Multiple format delivery'
+    ]
+  }
+];
+
+const testimonials = [
+  {
+    name: 'Sarah Johnson',
+    role: 'Bride',
+    image: '',
+    rating: 5,
+    text: 'Tanvay captured our wedding day perfectly! The photos are absolutely stunning and we couldn\'t be happier. Professional, creative, and a joy to work with.',
+    date: 'October 2024'
+  },
+  {
+    name: 'Michael Chen',
+    role: 'Business Owner',
+    image: '',
+    rating: 5,
+    text: 'Outstanding commercial photography work. The product photos have significantly improved our online sales. Highly professional and delivered ahead of schedule.',
+    date: 'September 2024'
+  },
+  {
+    name: 'Emily Rodriguez',
+    role: 'Event Coordinator',
+    image: '',
+    rating: 5,
+    text: 'We\'ve worked with Tanvay on multiple corporate events. Always reliable, captures the perfect moments, and the turnaround time is incredibly fast.',
+    date: 'August 2024'
+  },
+  {
+    name: 'David Thompson',
+    role: 'Marketing Director',
+    image: '',
+    rating: 5,
+    text: 'The video production quality exceeded our expectations. Great storytelling, beautiful cinematography, and perfect for our brand. Will definitely work together again!',
+    date: 'July 2024'
+  },
+  {
+    name: 'Lisa Anderson',
+    role: 'Portrait Client',
+    image: '',
+    rating: 5,
+    text: 'Amazing portrait session! Tanvay made me feel comfortable and the results are incredible. Perfect for my professional headshots and personal branding.',
+    date: 'June 2024'
+  },
+  {
+    name: 'Robert Martinez',
+    role: 'Real Estate Agent',
+    image: '',
+    rating: 5,
+    text: 'The property photos are fantastic! They showcase homes in the best light and have helped us close deals faster. Excellent work and very affordable.',
+    date: 'May 2024'
+  }
+];
+
+const processSteps = [
+  {
+    number: '01',
+    title: 'Consultation',
+    description: 'We discuss your vision, requirements, and project goals to ensure we\'re aligned.'
+  },
+  {
+    number: '02',
+    title: 'Planning',
+    description: 'Detailed planning including location scouting, shot lists, and timeline creation.'
+  },
+  {
+    number: '03',
+    title: 'Production',
+    description: 'Professional photo/video shoot with high-end equipment and expert techniques.'
+  },
+  {
+    number: '04',
+    title: 'Post-Production',
+    description: 'Careful editing, color grading, and retouching to perfection.'
+  },
+  {
+    number: '05',
+    title: 'Delivery',
+    description: 'Receive your high-resolution files in your preferred format and platform.'
+  }
+];
+---
+
+<Layout
+  title="Services - Tanvay Nama"
+  description="Professional photography and videography services including weddings, portraits, events, commercial work, and more"
+>
+  <Navigation />
+
+  <AnimatedServices services={services} testimonials={testimonials} processSteps={processSteps} client:load />
+
+  <Footer />
+</Layout>

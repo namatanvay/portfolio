@@ -1,0 +1,127 @@
+---
+const currentPath = Astro.url.pathname;
+
+const navItems = [
+  { name: 'Home', path: '/' },
+  { name: 'About', path: '/about' },
+  { name: 'Portfolio', path: '/portfolio' },
+  { name: 'Services', path: '/services' },
+  { name: 'Contact', path: '/contact' },
+];
+---
+
+<nav class="fixed top-0 left-0 right-0 z-50 bg-dark-elevated backdrop-blur-lg bg-opacity-95 border-b border-gray-800">
+  <div class="container mx-auto px-4 md:px-8">
+    <div class="flex items-center justify-between h-20">
+      <!-- Logo/Brand -->
+      <a href="/" class="text-2xl font-bold text-gradient hover:opacity-80 transition-opacity">
+        TANVAY NAMA
+      </a>
+
+      <!-- Desktop Navigation -->
+      <ul class="hidden md:flex items-center space-x-8">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.path}
+              class={`nav-link ${currentPath === item.path ? 'active' : ''}`}
+            >
+              {item.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <!-- Mobile Menu Button -->
+      <button
+        id="mobile-menu-button"
+        class="md:hidden text-2xl focus:outline-none"
+        aria-label="Toggle menu"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <div
+    id="mobile-menu"
+    class="md:hidden hidden bg-dark-elevated border-t border-gray-800"
+  >
+    <ul class="px-4 py-6 space-y-4">
+      {navItems.map((item) => (
+        <li>
+          <a
+            href={item.path}
+            class={`block nav-link ${currentPath === item.path ? 'active' : ''}`}
+          >
+            {item.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<!-- Spacer to prevent content from hiding under fixed navbar -->
+<div class="h-20"></div>
+
+<style>
+  .nav-link {
+    position: relative;
+    font-weight: 500;
+    transition: color 0.3s ease;
+  }
+
+  .nav-link:hover {
+    color: var(--accent-primary);
+  }
+
+  .nav-link.active {
+    color: var(--accent-primary);
+  }
+
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--accent-primary);
+  }
+
+  @media (max-width: 768px) {
+    .nav-link.active::after {
+      bottom: -4px;
+    }
+  }
+</style>
+
+<script>
+  // Mobile menu toggle
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  mobileMenuButton?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+    const icon = mobileMenuButton.querySelector('i');
+    if (icon) {
+      icon.classList.toggle('fa-bars');
+      icon.classList.toggle('fa-times');
+    }
+  });
+
+  // Close mobile menu when clicking on a link
+  const mobileLinks = mobileMenu?.querySelectorAll('a');
+  mobileLinks?.forEach(link => {
+    link.addEventListener('click', () => {
+      mobileMenu?.classList.add('hidden');
+      const icon = mobileMenuButton?.querySelector('i');
+      if (icon) {
+        icon.classList.add('fa-bars');
+        icon.classList.remove('fa-times');
+      }
+    });
+  });
+</script>

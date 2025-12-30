@@ -1,0 +1,357 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+
+const contactInfo = {
+  email: 'your.email@example.com',
+  phone: '+1-234-567-8900',
+  location: 'Your City, State',
+  availability: 'Mon-Fri: 9AM-6PM, Sat: 10AM-4PM'
+};
+
+const socialLinks = [
+  { name: 'Instagram', icon: 'fab fa-instagram', url: 'https://instagram.com/yourusername', handle: '@yourusername' },
+  { name: 'LinkedIn', icon: 'fab fa-linkedin', url: 'https://linkedin.com/in/yourusername', handle: 'Tanvay Nama' },
+  { name: 'Facebook', icon: 'fab fa-facebook', url: 'https://facebook.com/yourusername', handle: 'Tanvay Nama' },
+];
+---
+
+<Layout
+  title="Contact - Tanvay Nama"
+  description="Get in touch with Tanvay Nama for photography and videography services. Book your session today!"
+>
+  <Navigation />
+
+  <!-- Hero Section -->
+  <section class="section pt-32 bg-dark-elevated text-center">
+    <div class="container">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">
+        <span class="text-gradient">Get in Touch</span>
+      </h1>
+      <p class="text-light text-xl mb-4">
+        Let's discuss your project
+      </p>
+      <p class="text-muted max-w-3xl mx-auto">
+        Whether you're planning a wedding, need professional portraits, or have a commercial project in mind,
+        I'd love to hear from you. Fill out the form below or reach out directly via email or phone.
+      </p>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="section">
+    <div class="container">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <!-- Contact Form -->
+        <div>
+          <h2 class="text-3xl font-bold mb-6">Send a Message</h2>
+
+          <form
+            action="https://formspree.io/f/mlgevjrp"
+            method="POST"
+            class="space-y-6"
+            id="contact-form"
+          >
+            <!-- Name -->
+            <div>
+              <label for="name" class="block text-sm font-semibold mb-2">
+                Your Name *
+              </label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                class="w-full px-4 py-3 bg-dark-card border border-gray-700 rounded-lg focus:outline-none focus:border-accent transition-colors"
+                placeholder="John Doe"
+              />
+            </div>
+
+            <!-- Email -->
+            <div>
+              <label for="email" class="block text-sm font-semibold mb-2">
+                Email Address *
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                class="w-full px-4 py-3 bg-dark-card border border-gray-700 rounded-lg focus:outline-none focus:border-accent transition-colors"
+                placeholder="john@example.com"
+              />
+            </div>
+
+            <!-- Phone -->
+            <div>
+              <label for="phone" class="block text-sm font-semibold mb-2">
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                class="w-full px-4 py-3 bg-dark-card border border-gray-700 rounded-lg focus:outline-none focus:border-accent transition-colors"
+                placeholder="+1-234-567-8900"
+              />
+            </div>
+
+            <!-- Service Type -->
+            <div>
+              <label for="service" class="block text-sm font-semibold mb-2">
+                Service Interested In *
+              </label>
+              <select
+                id="service"
+                name="service"
+                required
+                class="w-full px-4 py-3 bg-dark-card border border-gray-700 rounded-lg focus:outline-none focus:border-accent transition-colors"
+              >
+                <option value="">Select a service...</option>
+                <option value="portrait">Portrait Photography</option>
+                <option value="wedding">Wedding Photography</option>
+                <option value="event">Event Photography</option>
+                <option value="video">Video Production</option>
+                <option value="commercial">Commercial Photography</option>
+                <option value="editing">Photo Editing</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <!-- Message -->
+            <div>
+              <label for="message" class="block text-sm font-semibold mb-2">
+                Message *
+              </label>
+              <textarea
+                id="message"
+                name="message"
+                required
+                rows="6"
+                class="w-full px-4 py-3 bg-dark-card border border-gray-700 rounded-lg focus:outline-none focus:border-accent transition-colors resize-none"
+                placeholder="Tell me about your project..."
+              ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="btn btn-primary w-full"
+            >
+              <i class="fas fa-paper-plane mr-2"></i>
+              Send Message
+            </button>
+
+            <!-- Success/Error Messages -->
+            <div id="form-status" class="hidden"></div>
+          </form>
+        </div>
+
+        <!-- Contact Information -->
+        <div>
+          <h2 class="text-3xl font-bold mb-6">Contact Information</h2>
+
+          <div class="space-y-6 mb-8">
+            <!-- Email -->
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-lg bg-gradient-accent flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-envelope text-dark text-xl"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold mb-1">Email</h3>
+                <a href={`mailto:${contactInfo.email}`} class="text-muted hover:text-accent transition-colors">
+                  {contactInfo.email}
+                </a>
+              </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-lg bg-gradient-accent flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-phone text-dark text-xl"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold mb-1">Phone</h3>
+                <a href={`tel:${contactInfo.phone}`} class="text-muted hover:text-accent transition-colors">
+                  {contactInfo.phone}
+                </a>
+              </div>
+            </div>
+
+            <!-- Location -->
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-lg bg-gradient-accent flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-map-marker-alt text-dark text-xl"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold mb-1">Location</h3>
+                <p class="text-muted">{contactInfo.location}</p>
+              </div>
+            </div>
+
+            <!-- Hours -->
+            <div class="flex items-start gap-4">
+              <div class="w-12 h-12 rounded-lg bg-gradient-accent flex items-center justify-center flex-shrink-0">
+                <i class="fas fa-clock text-dark text-xl"></i>
+              </div>
+              <div>
+                <h3 class="font-semibold mb-1">Availability</h3>
+                <p class="text-muted">{contactInfo.availability}</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Social Media -->
+          <div class="card bg-dark-card">
+            <h3 class="text-xl font-semibold mb-4">Follow Me</h3>
+            <div class="grid grid-cols-2 gap-4">
+              {socialLinks.map((social) => (
+                <a
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-3 p-3 bg-dark-elevated rounded-lg hover:bg-dark transition-colors group"
+                >
+                  <i class={`${social.icon} text-2xl text-accent`}></i>
+                  <div>
+                    <p class="text-sm font-semibold group-hover:text-accent transition-colors">{social.name}</p>
+                    <p class="text-xs text-muted">{social.handle}</p>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          <!-- Response Time -->
+          <div class="mt-8 card bg-gradient-accent">
+            <div class="text-dark">
+              <i class="fas fa-info-circle text-2xl mb-3 block"></i>
+              <h3 class="font-semibold mb-2">Quick Response</h3>
+              <p class="text-sm">
+                I typically respond to all inquiries within 24 hours during business days.
+                For urgent matters, please call directly.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Map Section (Optional - Placeholder) -->
+  <section class="section bg-dark-elevated">
+    <div class="container">
+      <div class="aspect-video rounded-2xl overflow-hidden bg-dark-card flex items-center justify-center">
+        <div class="text-center">
+          <i class="fas fa-map-marked-alt text-6xl text-muted opacity-20 mb-4"></i>
+          <p class="text-muted">Google Maps Embed Placeholder</p>
+          <p class="text-sm text-muted mt-2">Add your Google Maps iframe here</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  .text-gradient {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-accent {
+    color: var(--accent-primary);
+  }
+
+  .text-light {
+    color: var(--text-light);
+  }
+
+  .text-muted {
+    color: var(--text-muted);
+  }
+
+  .text-dark {
+    color: var(--bg-dark);
+  }
+
+  .bg-dark {
+    background-color: var(--bg-dark);
+  }
+
+  .bg-dark-elevated {
+    background-color: var(--bg-dark-elevated);
+  }
+
+  .bg-dark-card {
+    background-color: var(--bg-dark-card);
+  }
+
+  .bg-gradient-accent {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  }
+
+  input, select, textarea {
+    color: var(--text-light);
+  }
+
+  input::placeholder,
+  textarea::placeholder {
+    color: var(--text-muted);
+    opacity: 0.5;
+  }
+
+  select option {
+    background-color: var(--bg-dark-card);
+    color: var(--text-light);
+  }
+
+  .focus\:border-accent:focus {
+    border-color: var(--accent-primary);
+  }
+</style>
+
+<script>
+  // Form submission handling
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const formStatus = document.getElementById('form-status');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData(form);
+
+      try {
+        const response = await fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        });
+
+        if (response.ok) {
+          if (formStatus) {
+            formStatus.classList.remove('hidden');
+            formStatus.className = 'p-4 bg-green-500/20 border border-green-500 rounded-lg text-green-500';
+            formStatus.textContent = 'Thank you! Your message has been sent successfully. I\'ll get back to you soon.';
+          }
+          form.reset();
+        } else {
+          throw new Error('Form submission failed');
+        }
+      } catch (error) {
+        if (formStatus) {
+          formStatus.classList.remove('hidden');
+          formStatus.className = 'p-4 bg-red-500/20 border border-red-500 rounded-lg text-red-500';
+          formStatus.textContent = 'Oops! There was a problem sending your message. Please try again or contact me directly via email.';
+        }
+      }
+    });
+  }
+</script>

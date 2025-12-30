@@ -24,3 +24,7 @@ pnpm-debug.log*
 
 # jetbrains setting folder
 .idea/
+
+
+FIXES_APPLIED.md
+UPDATES.md

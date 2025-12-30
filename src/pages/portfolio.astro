@@ -1,0 +1,155 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import Gallery from '../components/Gallery';
+import ClientShowcase from '../components/ClientShowcase';
+
+// Sample gallery items - will be replaced with actual images
+const portfolioItems = [
+  // Portraits & Fashion
+  { id: 1, title: 'Portrait Session 1', category: 'portraits-fashion', image: '', type: 'photo' as const },
+  { id: 2, title: 'Fashion Shoot 1', category: 'portraits-fashion', image: '', type: 'photo' as const },
+  { id: 3, title: 'Portrait Session 2', category: 'portraits-fashion', image: '', type: 'photo' as const },
+  { id: 4, title: 'Fashion Video', category: 'portraits-fashion', image: '', type: 'video' as const },
+
+  // Events (Commercial Events)
+  { id: 5, title: 'Corporate Event', category: 'events', image: '', type: 'photo' as const },
+  { id: 6, title: 'Product Launch', category: 'events', image: '', type: 'photo' as const },
+  { id: 7, title: 'Conference Coverage', category: 'events', image: '', type: 'photo' as const },
+  { id: 8, title: 'Event Highlights', category: 'events', image: '', type: 'video' as const },
+
+  // Food (Restaurant/Pub/Bar)
+  { id: 9, title: 'Gourmet Dish - Restaurant Name', category: 'food', image: '', type: 'photo' as const },
+  { id: 10, title: 'Cocktails - Bar Name', category: 'food', image: '', type: 'photo' as const },
+  { id: 11, title: 'Fine Dining - Restaurant Name', category: 'food', image: '', type: 'photo' as const },
+  { id: 12, title: 'Food Video - Pub Name', category: 'food', image: '', type: 'video' as const },
+
+  // Travel
+  { id: 13, title: 'Mountain Vista', category: 'travel', image: '', type: 'photo' as const },
+  { id: 14, title: 'Travel Vlog', category: 'travel', image: '', type: 'video' as const },
+  { id: 15, title: 'Cityscape', category: 'travel', image: '', type: 'photo' as const },
+];
+
+// Client work showcase with tabs
+const clients = [
+  {
+    name: 'Restaurant ABC',
+    description: 'Food photography and menu documentation for a fine dining establishment',
+    work: [
+      { id: 101, title: 'Signature Dish', category: 'food', image: '', type: 'photo' as const },
+      { id: 102, title: 'Dessert Menu', category: 'food', image: '', type: 'photo' as const },
+      { id: 103, title: 'Chef Special', category: 'food', image: '', type: 'video' as const },
+    ]
+  },
+  {
+    name: 'Company XYZ',
+    description: 'Event coverage for corporate conferences and product launches',
+    work: [
+      { id: 201, title: 'Annual Conference', category: 'events', image: '', type: 'photo' as const },
+      { id: 202, title: 'Product Launch', category: 'events', image: '', type: 'photo' as const },
+      { id: 203, title: 'Event Highlights', category: 'events', image: '', type: 'video' as const },
+    ]
+  },
+  {
+    name: 'Fashion Brand DEF',
+    description: 'Portrait and fashion photography for seasonal campaigns',
+    work: [
+      { id: 301, title: 'Spring Collection', category: 'portraits-fashion', image: '', type: 'photo' as const },
+      { id: 302, title: 'Summer Lookbook', category: 'portraits-fashion', image: '', type: 'photo' as const },
+      { id: 303, title: 'Campaign Video', category: 'portraits-fashion', image: '', type: 'video' as const },
+    ]
+  },
+  {
+    name: 'Travel Agency GHI',
+    description: 'Travel photography and destination showcases',
+    work: [
+      { id: 401, title: 'Mountain Trek', category: 'travel', image: '', type: 'photo' as const },
+      { id: 402, title: 'Beach Resort', category: 'travel', image: '', type: 'photo' as const },
+      { id: 403, title: 'Destination Guide', category: 'travel', image: '', type: 'video' as const },
+    ]
+  },
+];
+---
+
+<Layout
+  title="Portfolio - Tanvay Nama"
+  description="Browse through my photography and videography portfolio featuring portraits, events, landscapes, and commercial work"
+>
+  <Navigation />
+
+  <!-- Hero Section -->
+  <section class="section pt-32 bg-dark-elevated text-center">
+    <div class="container">
+      <h1 class="text-5xl md:text-6xl font-bold mb-6">
+        <span class="text-gradient">Portfolio</span>
+      </h1>
+      <p class="text-light text-xl mb-4">
+        A collection of my best photography and videography work
+      </p>
+      <p class="text-muted max-w-3xl mx-auto">
+        From intimate portraits to grand events, from breathtaking landscapes to compelling commercial work,
+        explore the diverse range of projects that showcase my creative vision and technical expertise.
+      </p>
+    </div>
+  </section>
+
+  <!-- Gallery Section -->
+  <section class="section">
+    <div class="container">
+      <Gallery items={portfolioItems} client:load />
+    </div>
+  </section>
+
+  <!-- Client Showcase with Tabs -->
+  <ClientShowcase clients={clients} client:load />
+
+  <!-- CTA Section -->
+  <section class="section bg-dark-elevated">
+    <div class="container">
+      <div class="text-center">
+        <h2 class="text-4xl font-bold mb-4">Like What You See?</h2>
+        <p class="text-muted text-lg mb-8 max-w-2xl mx-auto">
+          Let's discuss how I can help bring your vision to life with professional photography and videography services.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/services" class="btn btn-outline">
+            <i class="fas fa-briefcase mr-2"></i>
+            View Services
+          </a>
+          <a href="/contact" class="btn btn-primary">
+            <i class="fas fa-envelope mr-2"></i>
+            Get in Touch
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  .text-gradient {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .text-light {
+    color: var(--text-light);
+  }
+
+  .text-muted {
+    color: var(--text-muted);
+  }
+
+  .bg-dark-elevated {
+    background-color: var(--bg-dark-elevated);
+  }
+
+  .bg-dark-card {
+    background-color: var(--bg-dark-card);
+  }
+</style>

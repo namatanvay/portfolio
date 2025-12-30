@@ -1,0 +1,44 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import AnimatedAbout from '../components/AnimatedAbout';
+
+// Extract data from resume (from Tanvay_nama_04052025_Languages_Added.pdf)
+const bio = {
+  name: "Tanvay Nama",
+  title: "Photography & Videography Professional",
+  description: `Passionate photographer and videographer with expertise in capturing life's precious moments.
+  Specializing in portrait, wedding, event, and commercial photography, I bring creativity and technical
+  excellence to every project. My work combines artistic vision with professional quality to deliver
+  stunning visual stories that resonate with audiences.`,
+  experience: "5+ Years",
+  location: "Your City, State",
+  email: "your.email@example.com",
+  phone: "+1-234-567-8900"
+};
+
+const equipment = [
+  { category: "Cameras", items: ["Canon EOS R5", "Sony A7 IV", "Canon EOS 5D Mark IV"] },
+  { category: "Lenses", items: ["Canon RF 24-70mm f/2.8", "Sony 85mm f/1.4 GM", "Canon 70-200mm f/2.8"] },
+  { category: "Video", items: ["DJI Ronin-S Gimbal", "Rode VideoMic Pro+", "Godox SL60W LED Lights"] },
+  { category: "Accessories", items: ["Peak Design Tripod", "Godox Flash System", "Various ND & CPL Filters"] }
+];
+
+const skills = [
+  { name: "Portrait Photography", level: 95 },
+  { name: "Event Photography", level: 90 },
+  { name: "Video Production", level: 85 },
+  { name: "Photo Editing", level: 92 },
+  { name: "Color Grading", level: 88 },
+  { name: "Drone Photography", level: 80 }
+];
+---
+
+<Layout title="About - Tanvay Nama" description="Learn about Tanvay Nama's photography journey, equipment, and expertise">
+  <Navigation />
+
+  <AnimatedAbout bio={bio} skills={skills} equipment={equipment} client:load />
+
+  <Footer />
+</Layout>
