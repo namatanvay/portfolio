@@ -6,6 +6,7 @@ interface GalleryItem {
   title: string;
   category: string;
   image: string;
+  video?: string;
   type: 'photo' | 'video';
 }
 
@@ -343,7 +344,18 @@ export default function Gallery({ items }: GalleryProps) {
                 animate={{ y: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                {selectedItem.image ? (
+                {selectedItem.type === 'video' && selectedItem.video ? (
+                  <video
+                    controls
+                    autoPlay
+                    className="w-full h-full object-contain"
+                    style={{ maxHeight: 'calc(100vh - 200px)' }}
+                    poster={selectedItem.image || undefined}
+                  >
+                    <source src={selectedItem.video} type="video/mp4" />
+                    Your browser does not support the video tag.
+                  </video>
+                ) : selectedItem.image ? (
                   <img
                     src={selectedItem.image}
                     alt={selectedItem.title}

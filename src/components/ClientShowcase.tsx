@@ -6,6 +6,7 @@ interface ClientWork {
   title: string;
   category: string;
   image: string;
+  video?: string;
   type: 'photo' | 'video';
 }
 
