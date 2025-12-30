@@ -13,7 +13,8 @@ interface Bio {
 
 interface Skill {
   name: string;
-  level: number;
+  description: string;
+  icon: string;
 }
 
 interface Equipment {
@@ -171,20 +172,11 @@ export default function AnimatedAbout({ bio, skills, equipment }: AnimatedAboutP
                   }}
                   transition={{ type: "spring", stiffness: 200 }}
                 >
-                  <div className="w-full h-full flex items-center justify-center bg-gradient-hero">
-                    <motion.i
-                      className="fas fa-user text-9xl text-primary opacity-40"
-                      animate={{
-                        scale: [1, 1.1, 1],
-                        rotate: [0, 5, -5, 0],
-                      }}
-                      transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                  </div>
+                  <img
+                    src="/images/profile/profile_image.jpeg"
+                    alt="Profile"
+                    className="w-full h-full object-cover"
+                  />
                 </motion.div>
                 {/* Decorative accent */}
                 <motion.div
@@ -311,7 +303,7 @@ export default function AnimatedAbout({ bio, skills, equipment }: AnimatedAboutP
       <section className="section">
         <div className="container">
           <motion.h2
-            className="text-4xl font-bold text-center mb-12"
+            className="text-4xl font-bold text-center mb-4"
             initial={{ opacity: 0, y: 50 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -319,52 +311,58 @@ export default function AnimatedAbout({ bio, skills, equipment }: AnimatedAboutP
           >
             <span className="accent-underline">Skills & Expertise</span>
           </motion.h2>
+          <motion.p
+            className="text-center text-muted text-lg mb-12"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            Core competencies and professional capabilities
+          </motion.p>
 
-          <div className="max-w-3xl mx-auto space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {skills.map((skill, i) => (
               <motion.div
                 key={i}
-                initial={{ opacity: 0, x: -100 }}
-                whileInView={{ opacity: 1, x: 0 }}
+                className="card text-center group"
+                initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
                 viewport={{ once: true }}
                 transition={{
                   delay: i * 0.1,
                   type: "spring",
                   stiffness: 100,
                 }}
+                whileHover={{
+                  scale: 1.05,
+                  y: -10,
+                  boxShadow: '0 10px 40px rgba(0, 206, 209, 0.3)',
+                }}
                 onHoverStart={() => setHoveredSkill(i)}
                 onHoverEnd={() => setHoveredSkill(null)}
               >
-                <div className="flex justify-between mb-2">
-                  <motion.span
-                    className="font-semibold"
-                    animate={hoveredSkill === i ? { x: 10, scale: 1.05 } : {}}
-                  >
-                    {skill.name}
-                  </motion.span>
-                  <motion.span
-                    className="text-primary font-bold"
-                    animate={hoveredSkill === i ? { scale: 1.2 } : {}}
-                  >
-                    {skill.level}%
-                  </motion.span>
-                </div>
-                <div className="h-3 bg-dark-card rounded-full overflow-hidden">
-                  <motion.div
-                    className="h-full bg-gradient-accent rounded-full"
-                    initial={{ width: 0 }}
-                    whileInView={{ width: `${skill.level}%` }}
-                    viewport={{ once: true }}
-                    transition={{
-                      delay: i * 0.1 + 0.3,
-                      duration: 1,
-                      ease: "easeOut",
-                    }}
-                    whileHover={{
-                      backgroundPosition: ['0% 50%', '100% 50%'],
-                    }}
-                  />
-                </div>
+                <motion.div
+                  className={`text-5xl mb-4 ${
+                    i % 3 === 0 ? 'text-primary' :
+                    i % 3 === 1 ? 'text-secondary' : 'text-tertiary'
+                  }`}
+                  animate={{
+                    rotate: hoveredSkill === i ? [0, -10, 10, 0] : 0,
+                    scale: hoveredSkill === i ? 1.2 : 1,
+                  }}
+                  transition={{
+                    duration: 0.5,
+                  }}
+                >
+                  <i className={`fas ${skill.icon}`}></i>
+                </motion.div>
+                <h3 className="text-xl font-semibold mb-3 text-light">
+                  {skill.name}
+                </h3>
+                <p className="text-muted text-sm">
+                  {skill.description}
+                </p>
               </motion.div>
             ))}
           </div>
