@@ -47,15 +47,7 @@ export default function ServicesTab() {
         className="text-center mb-12"
       >
         <motion.h2
-          className="text-5xl font-bold mb-4 text-gradient"
-          animate={{
-            scale: [1, 1.02, 1],
-          }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
+          className="text-5xl font-bold mb-4 text-white"
         >
           Services
         </motion.h2>

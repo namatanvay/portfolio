@@ -277,7 +277,7 @@ export default function AnimatedServices({ services, testimonials, processSteps 
                 }}
               >
                 <motion.div
-                  className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gradient-accent text-dark font-bold text-2xl mb-4 relative z-10"
+                  className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white text-dark font-bold text-2xl mb-4 relative z-10"
                   whileHover={{
                     scale: 1.2,
                     rotate: 360,
@@ -288,9 +288,9 @@ export default function AnimatedServices({ services, testimonials, processSteps 
                   }}
                   animate={{
                     boxShadow: [
-                      '0 0 0px rgba(100, 255, 218, 0.3)',
-                      '0 0 20px rgba(100, 255, 218, 0.6)',
-                      '0 0 0px rgba(100, 255, 218, 0.3)',
+                      '0 0 0px rgba(255, 255, 255, 0.3)',
+                      '0 0 20px rgba(255, 255, 255, 0.6)',
+                      '0 0 0px rgba(255, 255, 255, 0.3)',
                     ],
                   }}
                   transition={{
@@ -416,7 +416,7 @@ export default function AnimatedServices({ services, testimonials, processSteps 
       <section className="section">
         <div className="container">
           <motion.div
-            className="card bg-gradient-accent text-center py-16 relative overflow-hidden"
+            className="card bg-white text-center py-16 relative overflow-hidden"
             initial={{ opacity: 0, scale: 0.9 }}
             whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
@@ -426,7 +426,7 @@ export default function AnimatedServices({ services, testimonials, processSteps 
             {[...Array(10)].map((_, i) => (
               <motion.div
                 key={i}
-                className="absolute w-2 h-2 bg-white rounded-full opacity-30"
+                className="absolute w-2 h-2 bg-dark rounded-full opacity-30"
                 style={{
                   left: `${(i * 10 + 10) % 100}%`,
                   top: `${(i * 15 + 10) % 100}%`,

@@ -137,7 +137,7 @@ export default function ClientShowcase({ clients }: ClientShowcaseProps) {
                 onClick={() => setActiveClient(i)}
                 className={`relative px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-sm md:text-base transition-all whitespace-nowrap ${
                   activeClient === i
-                    ? 'text-light'
+                    ? 'text-dark'
                     : 'text-muted'
                 }`}
                 variants={tabVariants}
@@ -149,7 +149,7 @@ export default function ClientShowcase({ clients }: ClientShowcaseProps) {
                 {/* Active Tab Background */}
                 {activeClient === i && (
                   <motion.div
-                    className="absolute inset-0 bg-gradient-accent rounded-xl"
+                    className="absolute inset-0 bg-white rounded-xl"
                     layoutId="activeClientTab"
                     transition={{
                       type: "spring",
@@ -366,7 +366,7 @@ export default function ClientShowcase({ clients }: ClientShowcaseProps) {
         }
 
         .bg-gradient-accent {
-          background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+          background: var(--gradient-accent);
         }
       `}</style>
     </section>

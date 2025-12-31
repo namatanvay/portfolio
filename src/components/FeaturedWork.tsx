@@ -83,21 +83,7 @@ export default function FeaturedWork() {
         className="text-center mb-12"
       >
         <motion.h2
-          className="text-5xl font-bold mb-4"
-          animate={{
-            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-          }}
-          style={{
-            background: 'linear-gradient(90deg, #00CED1, #FF6B6B, #00CED1)',
-            backgroundSize: '200% 200%',
-            WebkitBackgroundClip: 'text',
-            backgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-          }}
+          className="text-5xl font-bold mb-4 text-white"
         >
           Featured Work
         </motion.h2>

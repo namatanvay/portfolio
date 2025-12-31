@@ -71,7 +71,7 @@ export default function Gallery({ items }: GalleryProps) {
             onClick={() => handleFilterChange(category)}
             className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-all ${
               activeFilter === category
-                ? 'bg-gradient-accent text-dark scale-105'
+                ? 'bg-white text-dark scale-105'
                 : 'bg-dark-card text-light hover:bg-dark-elevated'
             }`}
           >
@@ -82,16 +82,16 @@ export default function Gallery({ items }: GalleryProps) {
 
       {/* Gallery Grid - Optimized */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-        <AnimatePresence mode="wait">
+        <AnimatePresence>
           {filteredItems.map((item, index) => (
             <motion.div
               key={item.id}
-              initial={prefersReducedMotion || isMobile ? { opacity: 0 } : { opacity: 0, y: 20 }}
+              initial={prefersReducedMotion || isMobile ? { opacity: 0 } : { opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={prefersReducedMotion || isMobile ? { opacity: 0 } : { opacity: 0, scale: 0.9 }}
+              exit={{ opacity: 0 }}
               transition={{
-                duration: isMobile ? 0.2 : 0.3,
-                delay: isMobile ? 0 : index * 0.05
+                duration: 0.2,
+                delay: isMobile ? 0 : Math.min(index * 0.03, 0.3)
               }}
               onClick={() => setSelectedItem(item)}
               className="relative aspect-square bg-dark-card rounded-lg overflow-hidden cursor-pointer group"
@@ -105,7 +105,7 @@ export default function Gallery({ items }: GalleryProps) {
                   decoding="async"
                   width="400"
                   height="400"
-                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                 />
               ) : (
                 <div className="w-full h-full flex items-center justify-center bg-dark-elevated">
@@ -238,7 +238,7 @@ export default function Gallery({ items }: GalleryProps) {
         }
 
         .bg-gradient-accent {
-          background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+          background: var(--gradient-accent);
         }
 
         .line-clamp-2 {

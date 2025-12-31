@@ -33,9 +33,13 @@ UPDATES.md
 # Conversion scripts
 convert-to-webp.cjs
 
-# Video files - too large for GitHub, host on Google Drive instead
-# public/videos/**/*.mp4
-# public/videos/**/*.MP4
-# public/videos/**/*.mov
-# public/videos/**/*.MOV
+# Video files - too large for GitHub and Cloudflare, host on Google Drive/R2 instead
+public/videos/**/*.mp4
+public/videos/**/*.MP4
+public/videos/**/*.mov
+public/videos/**/*.MOV
+dist/videos/**/*.mp4
+dist/videos/**/*.MP4
+dist/videos/**/*.mov
+dist/videos/**/*.MOV
 
