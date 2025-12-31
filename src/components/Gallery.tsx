@@ -94,7 +94,9 @@ export default function Gallery({ items }: GalleryProps) {
                 delay: isMobile ? 0 : Math.min(index * 0.03, 0.3)
               }}
               onClick={() => setSelectedItem(item)}
-              className="relative aspect-square bg-dark-card rounded-lg overflow-hidden cursor-pointer group"
+              className={`relative bg-dark-card rounded-lg overflow-hidden cursor-pointer group ${
+                item.type === 'video' ? 'aspect-[9/16]' : 'aspect-square'
+              }`}
             >
               {/* Thumbnail */}
               {item.image ? (
@@ -164,17 +166,18 @@ export default function Gallery({ items }: GalleryProps) {
 
             {/* Content */}
             <div
-              className="max-w-6xl w-full h-full flex flex-col justify-center"
+              className="w-full h-full flex flex-col justify-center items-center px-4"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Media Container */}
-              <div className="relative w-full bg-dark-card rounded-lg overflow-hidden mb-4">
+              <div className="relative bg-dark-card rounded-lg overflow-hidden mb-4 flex items-center justify-center">
                 {selectedItem.type === 'video' && selectedItem.video ? (
                   <video
                     controls
                     playsInline
                     preload="none"
-                    className="w-full h-auto max-h-[70vh] object-contain"
+                    className="max-h-[85vh] max-w-full h-auto w-auto object-contain"
+                    style={{ maxWidth: selectedItem.type === 'video' ? '500px' : '100%' }}
                     poster={selectedItem.image || undefined}
                   >
                     <source src={selectedItem.video} type="video/mp4" />
@@ -183,7 +186,7 @@ export default function Gallery({ items }: GalleryProps) {
                   <img
                     src={selectedItem.image}
                     alt={selectedItem.title}
-                    className="w-full h-auto max-h-[70vh] object-contain"
+                    className="max-h-[85vh] max-w-full h-auto w-auto object-contain"
                   />
                 ) : (
                   <div className="w-full h-96 flex items-center justify-center">

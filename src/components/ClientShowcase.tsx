@@ -226,7 +226,9 @@ export default function ClientShowcase({ clients }: ClientShowcaseProps) {
                     className="card group cursor-pointer overflow-hidden p-0 relative"
                     style={{ transformStyle: 'preserve-3d' }}
                   >
-                    <div className="relative aspect-[4/3] bg-dark-card overflow-hidden">
+                    <div className={`relative bg-dark-card overflow-hidden ${
+                      item.type === 'video' ? 'aspect-[9/16]' : 'aspect-[4/3]'
+                    }`}>
                       {/* Thumbnail */}
                       {item.image ? (
                         <img
