@@ -33,4 +33,8 @@ UPDATES.md
 # Conversion scripts
 convert-to-webp.cjs
 
-portfolio\public\videos\portraits-fashion\valentino-song-24k.mp4
+# Video files - too large for GitHub, host on Google Drive instead
+public/videos/**/*.mp4
+public/videos/**/*.MP4
+public/videos/**/*.mov
+public/videos/**/*.MOV
