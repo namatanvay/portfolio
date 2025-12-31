@@ -34,7 +34,8 @@ UPDATES.md
 convert-to-webp.cjs
 
 # Video files - too large for GitHub, host on Google Drive instead
-public/videos/**/*.mp4
-public/videos/**/*.MP4
-public/videos/**/*.mov
-public/videos/**/*.MOV
+# public/videos/**/*.mp4
+# public/videos/**/*.MP4
+# public/videos/**/*.mov
+# public/videos/**/*.MOV
+
