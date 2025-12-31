@@ -17,7 +17,7 @@ interface GalleryProps {
 export default function Gallery({ items }: GalleryProps) {
   const [activeFilter, setActiveFilter] = useState('portraits-fashion');
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
-  const [itemsToShow, setItemsToShow] = useState(12); // Increased from 6 for better UX
+  const [itemsToShow, setItemsToShow] = useState(6); // Start with 6 for faster LCP
   const [isMobile, setIsMobile] = useState(false);
   const prefersReducedMotion = useReducedMotion();
 
@@ -54,11 +54,11 @@ export default function Gallery({ items }: GalleryProps) {
 
   const handleFilterChange = (category: string) => {
     setActiveFilter(category);
-    setItemsToShow(12); // Reset to 12 on filter change
+    setItemsToShow(6); // Reset to 6 on filter change
   };
 
   const loadMore = () => {
-    setItemsToShow(prev => prev + 12); // Load 12 more at a time
+    setItemsToShow(prev => prev + 6); // Load 6 more at a time (faster)
   };
 
   return (
@@ -103,8 +103,9 @@ export default function Gallery({ items }: GalleryProps) {
                 <img
                   src={item.image}
                   alt={item.title}
-                  loading="lazy"
+                  loading={index < 4 ? "eager" : "lazy"}
                   decoding="async"
+                  fetchPriority={index < 2 ? "high" : "auto"}
                   width="400"
                   height="400"
                   className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"

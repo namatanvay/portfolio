@@ -34,43 +34,43 @@ export default function FeaturedWork() {
     }
   };
 
-  // Featured portfolio items with actual images
+  // Featured portfolio items with actual images (optimized separately)
   const items = [
     {
       id: 1,
       title: "Fashion Photography",
       category: "Portraits",
-      image: "/images/portfolio/portraits/TKN01607.webp",
+      image: "/images/featured/TKN01607.webp",
     },
     {
       id: 2,
       title: "Event Coverage",
       category: "Events",
-      image: "/images/portfolio/events/TKN05524.webp",
+      image: "/images/featured/TKN05524.webp",
     },
     {
       id: 3,
       title: "Food Photography",
       category: "Food",
-      image: "/images/portfolio/food/TKN09388.webp",
+      image: "/images/featured/TKN09388.webp",
     },
     {
       id: 4,
       title: "Portrait Session",
       category: "Portraits",
-      image: "/images/portfolio/portraits/TKN07847.webp",
+      image: "/images/featured/TKN07847.webp",
     },
     {
       id: 5,
       title: "Product Photography",
       category: "Product",
-      image: "/images/portfolio/product/TKN02315.webp",
+      image: "/images/featured/TKN02315.webp",
     },
     {
       id: 6,
       title: "Commercial Event",
       category: "Events",
-      image: "/images/portfolio/events/TKN06043.webp",
+      image: "/images/featured/TKN06043.webp",
     },
   ];
 

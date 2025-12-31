@@ -233,6 +233,7 @@ export default function ClientShowcase({ clients }: ClientShowcaseProps) {
                           alt={item.title}
                           loading="lazy"
                           decoding="async"
+                          fetchPriority="auto"
                           width="600"
                           height="450"
                           className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"

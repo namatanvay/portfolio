@@ -30,6 +30,9 @@ const { title, description = "Professional Photography & Videography Portfolio" 
     <meta name="twitter:card" content="summary_large_image" />
 
     <title>{title}</title>
+
+    <!-- Page-specific head content -->
+    <slot name="head" />
   </head>
   <body>
     <slot />

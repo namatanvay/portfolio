@@ -802,6 +802,22 @@ const clients = [
   title="Portfolio - Tanvay Nama"
   description="Browse through my photography and videography portfolio featuring portraits, events, landscapes, and commercial work"
 >
+  <!-- Preload critical images for LCP optimization -->
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href="/images/portfolio/portraits/DSC01007.webp"
+    fetchpriority="high"
+  />
+  <link
+    slot="head"
+    rel="preload"
+    as="image"
+    href="/images/portfolio/portraits/DSC02316.webp"
+    fetchpriority="high"
+  />
+
   <Navigation />
 
   <!-- Hero Section -->
