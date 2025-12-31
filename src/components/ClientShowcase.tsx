@@ -219,15 +219,12 @@ export default function ClientShowcase({ clients }: ClientShowcaseProps) {
                     key={item.id}
                     variants={itemVariants}
                     whileHover={isMobile || prefersReducedMotion ? {} : {
-                      scale: 1.05,
-                      rotateY: 5,
-                      z: 50,
+                      scale: 1.03,
                     }}
                     className="card group cursor-pointer overflow-hidden p-0 relative"
-                    style={{ transformStyle: 'preserve-3d' }}
                   >
                     <div className={`relative bg-dark-card overflow-hidden ${
-                      item.type === 'video' ? 'aspect-[9/16]' : 'aspect-[4/3]'
+                      item.type === 'video' ? 'aspect-[9/16]' : 'aspect-square'
                     }`}>
                       {/* Thumbnail */}
                       {item.image ? (

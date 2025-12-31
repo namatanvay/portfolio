@@ -67,32 +67,6 @@ export default function AnimatedServices({ services, testimonials, processSteps 
     <div className="relative overflow-hidden">
       {/* Hero Section */}
       <section className="section pt-32 bg-dark-elevated text-center relative">
-        {/* Animated Background Blobs */}
-        <motion.div
-          className="absolute top-20 left-10 w-96 h-96 bg-primary opacity-20 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.2, 1],
-            opacity: [0.2, 0.3, 0.2],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-10 w-96 h-96 bg-secondary opacity-20 rounded-full blur-3xl"
-          animate={{
-            scale: [1, 1.3, 1],
-            opacity: [0.2, 0.4, 0.2],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1,
-          }}
-        />
 
         <div className="container relative z-10">
           <motion.h1
@@ -422,40 +396,13 @@ export default function AnimatedServices({ services, testimonials, processSteps 
             viewport={{ once: true }}
             whileHover={{ scale: 1.02 }}
           >
-            {/* Floating particles */}
-            {[...Array(10)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-2 h-2 bg-dark rounded-full opacity-30"
-                style={{
-                  left: `${(i * 10 + 10) % 100}%`,
-                  top: `${(i * 15 + 10) % 100}%`,
-                }}
-                animate={{
-                  y: [0, -20, 0],
-                  opacity: [0.3, 0.6, 0.3],
-                }}
-                transition={{
-                  duration: 2 + Math.random(),
-                  repeat: Infinity,
-                  delay: Math.random() * 2,
-                }}
-              />
-            ))}
 
-            <motion.h2
+            <h2
               className="text-4xl font-bold mb-4 relative z-10"
               style={{ color: '#0D0D0D' }}
-              animate={{
-                scale: [1, 1.02, 1],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-              }}
             >
               Ready to Get Started?
-            </motion.h2>
+            </h2>
             <motion.p
               className="text-lg mb-8 max-w-2xl mx-auto relative z-10"
               style={{ color: '#0D0D0D' }}

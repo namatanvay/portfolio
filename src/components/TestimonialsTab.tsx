@@ -91,20 +91,11 @@ export default function TestimonialsTab() {
             />
 
             {/* Quote Icon */}
-            <motion.div
+            <div
               className="text-accent text-6xl mb-4 relative"
-              animate={{
-                rotate: hoveredIndex === index ? 360 : 0,
-                scale: hoveredIndex === index ? 1.2 : 1,
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 200,
-                damping: 10,
-              }}
             >
               <i className="fas fa-quote-left"></i>
-            </motion.div>
+            </div>
 
             {/* Testimonial Text */}
             <motion.p
@@ -145,49 +136,13 @@ export default function TestimonialsTab() {
               transition={{ delay: 0.7 + index * 0.1 }}
             >
               {[...Array(5)].map((_, i) => (
-                <motion.i
+                <i
                   key={i}
                   className="fas fa-star text-accent text-sm"
-                  initial={{ scale: 0, rotate: -180 }}
-                  animate={{ scale: 1, rotate: 0 }}
-                  transition={{
-                    delay: 0.8 + index * 0.1 + i * 0.05,
-                    type: "spring",
-                    stiffness: 200,
-                  }}
-                  whileHover={{
-                    scale: 1.3,
-                    rotate: 360,
-                  }}
                 />
               ))}
             </motion.div>
 
-            {/* Floating Particles */}
-            {hoveredIndex === index && [...Array(8)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-accent rounded-full"
-                initial={{
-                  x: 0,
-                  y: 0,
-                  opacity: 0,
-                }}
-                animate={{
-                  x: Math.cos(i * 45 * Math.PI / 180) * 50,
-                  y: Math.sin(i * 45 * Math.PI / 180) * 50,
-                  opacity: [0, 1, 0],
-                }}
-                transition={{
-                  duration: 1,
-                  repeat: Infinity,
-                }}
-                style={{
-                  left: '50%',
-                  top: '50%',
-                }}
-              />
-            ))}
           </motion.div>
         ))}
       </motion.div>

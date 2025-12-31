@@ -86,21 +86,11 @@ export default function ServicesTab() {
               transition={{ duration: 0.3 }}
             />
 
-            <motion.div
+            <div
               className="text-accent text-7xl mb-6 relative"
-              animate={{
-                y: [0, -10, 0],
-                rotate: [0, 5, -5, 0],
-              }}
-              transition={{
-                duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
-                delay: index * 0.2,
-              }}
             >
               <i className={`fas ${service.icon}`}></i>
-            </motion.div>
+            </div>
 
             <motion.h3
               className="text-2xl font-semibold mb-3 relative"
@@ -120,26 +110,6 @@ export default function ServicesTab() {
               {service.desc}
             </motion.p>
 
-            {/* Particle Effect */}
-            {[...Array(5)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-accent rounded-full"
-                style={{
-                  left: `${20 + i * 15}%`,
-                  top: `${20 + i * 10}%`,
-                }}
-                animate={{
-                  scale: [0, 1, 0],
-                  opacity: [0, 1, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: i * 0.3,
-                }}
-              />
-            ))}
           </motion.div>
         ))}
       </motion.div>

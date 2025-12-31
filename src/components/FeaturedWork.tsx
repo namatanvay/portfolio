@@ -108,16 +108,12 @@ export default function FeaturedWork() {
             key={item.id}
             variants={itemVariants}
             whileHover={prefersReducedMotion ? {} : {
-              scale: 1.05,
-              rotateY: 5,
-              z: 50,
+              scale: 1.03,
               transition: {
-                type: "spring",
-                stiffness: 300,
+                duration: 0.2,
               }
             }}
             className="card group cursor-pointer overflow-hidden p-0 relative"
-            style={{ transformStyle: 'preserve-3d' }}
           >
             <div className="relative aspect-[4/3] bg-dark-card overflow-hidden">
               {/* Image */}
@@ -161,18 +157,6 @@ export default function FeaturedWork() {
             </div>
 
             {/* Corner Accent */}
-            <motion.div
-              className="absolute top-4 right-4 w-3 h-3 bg-accent rounded-full"
-              animate={{
-                scale: [1, 1.5, 1],
-                opacity: [0.5, 1, 0.5],
-              }}
-              transition={{
-                duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-            />
           </motion.div>
         ))}
       </motion.div>

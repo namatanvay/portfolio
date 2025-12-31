@@ -97,11 +97,10 @@ export default function TabSection() {
             <motion.button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`relative px-4 sm:px-6 md:px-8 py-3 md:py-4 rounded-lg md:rounded-xl font-semibold text-sm sm:text-base md:text-lg transition-all whitespace-nowrap ${
-                activeTab === tab.id
-                  ? 'text-dark'
-                  : 'text-muted'
-              }`}
+              className="relative px-4 sm:px-6 md:px-8 py-3 md:py-4 rounded-lg md:rounded-xl font-semibold text-sm sm:text-base md:text-lg transition-all whitespace-nowrap"
+              style={{
+                color: activeTab === tab.id ? '#0D0D0D' : '#A3A3A3'
+              }}
               variants={tabVariants}
               initial="inactive"
               animate={activeTab === tab.id ? "active" : "inactive"}
@@ -142,7 +141,8 @@ export default function TabSection() {
               {/* Active Indicator Dot */}
               {activeTab === tab.id && (
                 <motion.div
-                  className="absolute -bottom-0.5 md:-bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 md:w-2 md:h-2 bg-dark rounded-full"
+                  className="absolute -bottom-0.5 md:-bottom-1 left-1/2 transform -translate-x-1/2 w-1.5 h-1.5 md:w-2 md:h-2 rounded-full"
+                  style={{ backgroundColor: '#0D0D0D' }}
                   variants={indicatorVariants}
                   initial="initial"
                   animate="animate"
