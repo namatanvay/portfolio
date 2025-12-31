@@ -32,5 +32,3 @@ FIXES_APPLIED.md
 UPDATES.md
 # Conversion scripts
 convert-to-webp.cjs
-
-public/
