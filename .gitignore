@@ -25,6 +25,12 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
+# claude code
+.claude/
 
 FIXES_APPLIED.md
 UPDATES.md
+# Conversion scripts
+convert-to-webp.cjs
+
+public/

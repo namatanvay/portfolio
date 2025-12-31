@@ -98,28 +98,47 @@ Update `astro.config.mjs`:
 
 ### Adding Content
 
-#### Images
-Place your images in the appropriate folders:
-- Portfolio photos: `public/images/portfolio/{portraits,events,landscapes,commercial}/`
-- Profile photo: `public/images/profile/`
-- Client logos: `public/images/clients/`
+**📖 See `HOW_TO_ADD_MEDIA.md` for complete guide on adding images and videos**
 
-#### Videos
-Place your videos in:
-- `public/videos/{music,travel,reels,commercial}/`
-- Use MP4 format (H.264 codec) for best compatibility
+#### Quick Start
+Edit `src/pages/portfolio.astro` and add items to the `portfolioItems` array:
 
-#### Updating Content
+```javascript
+{
+  id: 1,
+  title: "My Photo",
+  category: "portraits-fashion",
+  image: "/images/portfolio/portraits/photo.jpg",
+  type: "photo"
+}
+```
+
+#### For Large Files (Videos > 50MB)
+Use Google Drive! See `GOOGLE_DRIVE_GUIDE.md` for instructions.
+
+#### Other Content
 Edit the respective page files in `src/pages/`:
 - `index.astro` - Homepage content
 - `about.astro` - Bio, skills, equipment
-- `portfolio.astro` - Gallery items
+- `portfolio.astro` - Gallery items (add your photos/videos here!)
 - `services.astro` - Services, pricing, testimonials
 - `contact.astro` - Contact information
 
 ## Deployment
 
-### GitHub Pages (Automatic)
+### Cloudflare Pages (Recommended)
+
+1. Push your code to GitHub
+2. Go to Cloudflare Pages → Create application → Connect to Git
+3. Build settings:
+   - **Framework preset:** Astro
+   - **Build command:** `npm run build`
+   - **Build output directory:** `dist`
+4. Deploy!
+
+See `wrangler.jsonc` for configuration.
+
+### GitHub Pages (Alternative)
 
 1. Create a GitHub repository
 

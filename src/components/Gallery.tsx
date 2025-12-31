@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 
 interface GalleryItem {
   id: number;
@@ -15,418 +15,191 @@ interface GalleryProps {
 }
 
 export default function Gallery({ items }: GalleryProps) {
-  const [activeFilter, setActiveFilter] = useState('all');
+  const [activeFilter, setActiveFilter] = useState('portraits-fashion');
   const [selectedItem, setSelectedItem] = useState<GalleryItem | null>(null);
+  const [itemsToShow, setItemsToShow] = useState(12); // Increased from 6 for better UX
+  const [isMobile, setIsMobile] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
 
-  // Map category keys to display names
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Category labels for display
   const categoryLabels: Record<string, string> = {
-    'all': 'All',
-    'portraits-fashion': 'Portraits/Fashion',
+    'portraits-fashion': 'Portraits',
     'events': 'Events',
     'food': 'Food',
-    'travel': 'Travel',
+    'product': 'Product',
+    'videos': 'Videos',
   };
 
-  const categories = ['all', ...Array.from(new Set(items.map(item => item.category)))];
-  const filteredItems = activeFilter === 'all'
-    ? items
-    : items.filter(item => item.category === activeFilter);
+  // Filter buttons (no "all")
+  const categories = ['portraits-fashion', 'events', 'food', 'product', 'videos'];
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-      }
-    }
+  // Filter items based on selection
+  const allFilteredItems = activeFilter === 'videos'
+    ? items.filter(item => item.type === 'video')
+    : items.filter(item => item.category === activeFilter && item.type === 'photo');
+
+  // Pagination
+  const filteredItems = allFilteredItems.slice(0, itemsToShow);
+  const hasMore = itemsToShow < allFilteredItems.length;
+
+  const handleFilterChange = (category: string) => {
+    setActiveFilter(category);
+    setItemsToShow(12); // Reset to 12 on filter change
   };
 
-  const itemVariants = {
-    hidden: {
-      opacity: 0,
-      scale: 0.3,
-      rotateY: -90,
-      y: 100,
-    },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      rotateY: 0,
-      y: 0,
-      transition: {
-        type: "spring",
-        stiffness: 120,
-        damping: 15,
-      }
-    },
-    exit: {
-      opacity: 0,
-      scale: 0.3,
-      rotateY: 90,
-      y: -100,
-      transition: {
-        duration: 0.3,
-      }
-    }
-  };
-
-  const filterVariants = {
-    inactive: {
-      scale: 0.9,
-      opacity: 0.6,
-    },
-    active: {
-      scale: 1,
-      opacity: 1,
-    },
-    hover: {
-      scale: 1.1,
-      y: -3,
-    }
+  const loadMore = () => {
+    setItemsToShow(prev => prev + 12); // Load 12 more at a time
   };
 
   return (
     <>
-      {/* Filter Buttons with Animations */}
-      <motion.div
-        className="flex flex-wrap justify-center gap-4 mb-16"
-        initial={{ opacity: 0, y: -50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ type: "spring", stiffness: 100 }}
-      >
-        {categories.map((category, index) => (
-          <motion.button
+      {/* Filter Buttons - Mobile Optimized */}
+      <div className="flex flex-wrap justify-center gap-2 sm:gap-4 mb-8 sm:mb-12 px-2">
+        {categories.map((category) => (
+          <button
             key={category}
-            onClick={() => setActiveFilter(category)}
-            className={`relative px-8 py-4 rounded-xl font-semibold text-lg capitalize transition-all overflow-hidden ${
+            onClick={() => handleFilterChange(category)}
+            className={`px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-all ${
               activeFilter === category
-                ? 'text-dark'
-                : 'text-light bg-dark-card'
+                ? 'bg-gradient-accent text-dark scale-105'
+                : 'bg-dark-card text-light hover:bg-dark-elevated'
             }`}
-            variants={filterVariants}
-            initial="inactive"
-            animate={activeFilter === category ? "active" : "inactive"}
-            whileHover="hover"
-            whileTap={{ scale: 0.95 }}
           >
-            {/* Active Background */}
-            {activeFilter === category && (
-              <motion.div
-                className="absolute inset-0 bg-gradient-accent"
-                layoutId="activeFilter"
-                transition={{
-                  type: "spring",
-                  stiffness: 300,
-                  damping: 30,
-                }}
-              />
-            )}
-
-            {/* Category Label */}
-            <span className="relative z-10 flex items-center gap-2">
-              <motion.i
-                className="fas fa-circle text-xs"
-                animate={{
-                  scale: activeFilter === category ? [1, 1.5, 1] : 1,
-                }}
-                transition={{
-                  duration: 0.5,
-                  repeat: activeFilter === category ? Infinity : 0,
-                  repeatDelay: 1,
-                }}
-              />
-              {categoryLabels[category] || category}
-            </span>
-
-            {/* Ripple Effect */}
-            {activeFilter === category && (
-              <motion.div
-                className="absolute inset-0 bg-white opacity-20 rounded-xl"
-                initial={{ scale: 0 }}
-                animate={{ scale: 1.5, opacity: 0 }}
-                transition={{ duration: 0.6 }}
-              />
-            )}
-          </motion.button>
+            {categoryLabels[category]}
+          </button>
         ))}
-      </motion.div>
+      </div>
 
-      {/* Gallery Grid with Staggered Animation */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={activeFilter}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-          variants={containerVariants}
-          initial="hidden"
-          animate="visible"
-        >
+      {/* Gallery Grid - Optimized */}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+        <AnimatePresence mode="wait">
           {filteredItems.map((item, index) => (
             <motion.div
               key={item.id}
-              variants={itemVariants}
-              layout
-              onClick={() => setSelectedItem(item)}
-              className="card group cursor-pointer overflow-hidden p-0 relative"
-              style={{ transformStyle: 'preserve-3d' }}
-              whileHover={{
-                scale: 1.05,
-                rotateY: 8,
-                z: 50,
-                transition: {
-                  type: "spring",
-                  stiffness: 300,
-                }
+              initial={prefersReducedMotion || isMobile ? { opacity: 0 } : { opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={prefersReducedMotion || isMobile ? { opacity: 0 } : { opacity: 0, scale: 0.9 }}
+              transition={{
+                duration: isMobile ? 0.2 : 0.3,
+                delay: isMobile ? 0 : index * 0.05
               }}
+              onClick={() => setSelectedItem(item)}
+              className="relative aspect-square bg-dark-card rounded-lg overflow-hidden cursor-pointer group"
             >
-              <div className="relative aspect-[4/3] bg-dark-card overflow-hidden">
-                {/* Placeholder or Image */}
-                {item.image ? (
-                  <motion.img
-                    src={item.image}
-                    alt={item.title}
-                    className="w-full h-full object-cover"
-                    initial={{ scale: 1.2, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ duration: 0.6 }}
-                    whileHover={{ scale: 1.15 }}
-                  />
-                ) : (
-                  <motion.div
-                    className="w-full h-full flex items-center justify-center"
-                    whileHover={{ scale: 1.1 }}
-                  >
-                    <motion.i
-                      className={`fas ${item.type === 'video' ? 'fa-play-circle' : 'fa-camera'} text-8xl text-muted opacity-20`}
-                      animate={{
-                        rotate: [0, 10, -10, 0],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: index * 0.2,
-                      }}
-                    />
-                  </motion.div>
-                )}
-
-                {/* Animated Overlay */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-t from-dark via-dark/70 to-transparent flex items-end p-6"
-                  initial={{ opacity: 0 }}
-                  whileHover={{ opacity: 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <motion.div
-                    initial={{ y: 30, opacity: 0 }}
-                    whileHover={{ y: 0, opacity: 1 }}
-                    transition={{ delay: 0.1 }}
-                  >
-                    <h3 className="text-2xl font-semibold mb-1">{item.title}</h3>
-                    <p className="text-muted capitalize">{item.category}</p>
-                  </motion.div>
-                </motion.div>
-
-                {/* Video Badge */}
-                {item.type === 'video' && (
-                  <motion.div
-                    className="absolute top-4 right-4 bg-dark/90 backdrop-blur-sm rounded-full w-14 h-14 flex items-center justify-center"
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{
-                      type: "spring",
-                      stiffness: 200,
-                      delay: index * 0.05,
-                    }}
-                    whileHover={{
-                      scale: 1.2,
-                      rotate: 360,
-                    }}
-                  >
-                    <motion.i
-                      className="fas fa-play text-accent text-xl"
-                      animate={{
-                        scale: [1, 1.2, 1],
-                      }}
-                      transition={{
-                        duration: 1.5,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                  </motion.div>
-                )}
-
-                {/* Shine Effect */}
-                <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white to-transparent opacity-0 pointer-events-none"
-                  initial={{ x: '-100%' }}
-                  whileHover={{
-                    x: '200%',
-                    opacity: [0, 0.3, 0],
-                  }}
-                  transition={{ duration: 0.8 }}
+              {/* Thumbnail */}
+              {item.image ? (
+                <img
+                  src={item.image}
+                  alt={item.title}
+                  loading="lazy"
+                  decoding="async"
+                  width="400"
+                  height="400"
+                  className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                 />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center bg-dark-elevated">
+                  <i className={`fas ${item.type === 'video' ? 'fa-play-circle' : 'fa-camera'} text-4xl sm:text-5xl text-muted opacity-30`}></i>
+                </div>
+              )}
 
-                {/* Corner Particles */}
-                {[...Array(4)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    className="absolute w-2 h-2 bg-accent rounded-full"
-                    style={{
-                      top: i < 2 ? '8px' : 'auto',
-                      bottom: i >= 2 ? '8px' : 'auto',
-                      left: i % 2 === 0 ? '8px' : 'auto',
-                      right: i % 2 === 1 ? '8px' : 'auto',
-                    }}
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.3, 1, 0.3],
-                    }}
-                    transition={{
-                      duration: 2,
-                      repeat: Infinity,
-                      delay: i * 0.5,
-                    }}
-                  />
-                ))}
+            {/* Video Badge */}
+            {item.type === 'video' && (
+              <div className="absolute top-2 right-2 bg-dark/80 backdrop-blur-sm rounded-full w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center">
+                <i className="fas fa-play text-accent text-xs sm:text-sm"></i>
+              </div>
+            )}
+
+              {/* Overlay on Hover */}
+              <div className="absolute inset-0 bg-gradient-to-t from-dark via-dark/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-2 sm:p-3">
+                <div className="text-white">
+                  <h3 className="text-xs sm:text-sm font-semibold line-clamp-2">{item.title}</h3>
+                </div>
               </div>
             </motion.div>
           ))}
-        </motion.div>
-      </AnimatePresence>
+        </AnimatePresence>
+      </div>
 
-      {/* Lightbox Modal with Heavy Animations */}
+      {/* Load More Button */}
+      {hasMore && (
+        <div className="text-center mt-8 sm:mt-12">
+          <button
+            onClick={loadMore}
+            className="btn btn-primary px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg"
+          >
+            Load More ({allFilteredItems.length - itemsToShow})
+            <i className="fas fa-chevron-down ml-2"></i>
+          </button>
+        </div>
+      )}
+
+      {/* Lightbox Modal - Simplified */}
       <AnimatePresence>
         {selectedItem && (
           <motion.div
-            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4 md:p-8"
+            className="fixed inset-0 bg-black/95 z-50 flex items-center justify-center p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedItem(null)}
           >
             {/* Close Button */}
-            <motion.button
-              className="absolute top-4 right-4 md:top-8 md:right-8 text-white text-3xl md:text-4xl hover:text-accent transition-colors z-20"
+            <button
+              className="absolute top-4 right-4 text-white text-2xl sm:text-3xl z-20"
               onClick={() => setSelectedItem(null)}
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              whileHover={{ scale: 1.2, rotate: 90 }}
-              whileTap={{ scale: 0.9 }}
             >
               <i className="fas fa-times"></i>
-            </motion.button>
+            </button>
 
             {/* Content */}
-            <motion.div
-              className="max-w-7xl w-full h-full flex flex-col justify-center"
+            <div
+              className="max-w-6xl w-full h-full flex flex-col justify-center"
               onClick={(e) => e.stopPropagation()}
-              initial={{ scale: 0.5, rotateY: -90, opacity: 0 }}
-              animate={{ scale: 1, rotateY: 0, opacity: 1 }}
-              exit={{ scale: 0.5, rotateY: 90, opacity: 0 }}
-              transition={{
-                type: "spring",
-                stiffness: 100,
-                damping: 20,
-              }}
             >
-              {/* Image/Video Container - Fixed height for proper layout */}
-              <motion.div
-                className="relative w-full bg-dark-card rounded-2xl overflow-hidden mb-4 md:mb-6"
-                style={{
-                  maxHeight: 'calc(100vh - 200px)',
-                  height: 'auto',
-                  aspectRatio: '16/9'
-                }}
-                initial={{ y: 50 }}
-                animate={{ y: 0 }}
-                transition={{ delay: 0.2 }}
-              >
+              {/* Media Container */}
+              <div className="relative w-full bg-dark-card rounded-lg overflow-hidden mb-4">
                 {selectedItem.type === 'video' && selectedItem.video ? (
                   <video
                     controls
-                    autoPlay
-                    className="w-full h-full object-contain"
-                    style={{ maxHeight: 'calc(100vh - 200px)' }}
+                    playsInline
+                    preload="none"
+                    className="w-full h-auto max-h-[70vh] object-contain"
                     poster={selectedItem.image || undefined}
                   >
                     <source src={selectedItem.video} type="video/mp4" />
-                    Your browser does not support the video tag.
                   </video>
                 ) : selectedItem.image ? (
                   <img
                     src={selectedItem.image}
                     alt={selectedItem.title}
-                    className="w-full h-full object-contain"
-                    style={{ maxHeight: 'calc(100vh - 200px)' }}
+                    className="w-full h-auto max-h-[70vh] object-contain"
                   />
                 ) : (
-                  <div className="w-full h-full flex items-center justify-center">
-                    <motion.i
-                      className={`fas ${selectedItem.type === 'video' ? 'fa-play-circle' : 'fa-camera'} text-7xl md:text-9xl text-muted opacity-20`}
-                      animate={{ rotate: 360 }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "linear",
-                      }}
-                    />
+                  <div className="w-full h-96 flex items-center justify-center">
+                    <i className="fas fa-camera text-6xl text-muted opacity-20"></i>
                   </div>
                 )}
-              </motion.div>
+              </div>
 
               {/* Info */}
-              <motion.div
-                className="text-center"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-              >
-                <motion.h3
-                  className="text-2xl md:text-4xl font-bold text-light mb-2"
-                  initial={{ scale: 0.8 }}
-                  animate={{ scale: 1 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 200,
-                    delay: 0.5,
-                  }}
-                >
-                  {selectedItem.title}
-                </motion.h3>
-                <motion.p
-                  className="text-muted text-base md:text-xl"
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.6 }}
-                >
+              <div className="text-center text-white">
+                <h3 className="text-xl sm:text-2xl font-bold mb-1">{selectedItem.title}</h3>
+                <p className="text-muted text-sm sm:text-base">
                   {categoryLabels[selectedItem.category] || selectedItem.category}
-                </motion.p>
-              </motion.div>
-            </motion.div>
-
-            {/* Background Particles */}
-            {[...Array(30)].map((_, i) => (
-              <motion.div
-                key={i}
-                className="absolute w-1 h-1 bg-accent rounded-full"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                }}
-                animate={{
-                  scale: [0, 1, 0],
-                  opacity: [0, 1, 0],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  delay: Math.random() * 2,
-                }}
-              />
-            ))}
+                </p>
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
@@ -466,6 +239,13 @@ export default function Gallery({ items }: GalleryProps) {
 
         .bg-gradient-accent {
           background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        }
+
+        .line-clamp-2 {
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
       `}</style>
     </>

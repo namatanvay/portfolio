@@ -4,16 +4,15 @@ import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 
 const contactInfo = {
-  email: 'your.email@example.com',
-  phone: '+1-234-567-8900',
-  location: 'Your City, State',
-  availability: 'Mon-Fri: 9AM-6PM, Sat: 10AM-4PM'
+  email: 'tanvayphotography@gmail.com',
+  phone: '+91 7231952852',
+  location: 'Mumbai, Maharashtra, India',
+  availability: 'Available 7 days a week - Flexible hours'
 };
 
 const socialLinks = [
-  { name: 'Instagram', icon: 'fab fa-instagram', url: 'https://instagram.com/yourusername', handle: '@yourusername' },
-  { name: 'LinkedIn', icon: 'fab fa-linkedin', url: 'https://linkedin.com/in/yourusername', handle: 'Tanvay Nama' },
-  { name: 'Facebook', icon: 'fab fa-facebook', url: 'https://facebook.com/yourusername', handle: 'Tanvay Nama' },
+  { name: 'Instagram', icon: 'fab fa-instagram', url: 'https://instagram.com/tanvayphotography', handle: '@tanvayphotography' },
+  { name: 'LinkedIn', icon: 'fab fa-linkedin', url: 'https://www.linkedin.com/in/tanvay-nama-369b48198/', handle: 'Tanvay Nama' },
 ];
 ---
 
@@ -152,15 +151,15 @@ const socialLinks = [
         <div>
           <h2 class="text-3xl font-bold mb-6">Contact Information</h2>
 
-          <div class="space-y-6 mb-8">
+          <div class="space-y-8 mb-8">
             <!-- Email -->
             <div class="flex items-start gap-4">
-              <div class="w-12 h-12 rounded-lg bg-gradient-accent flex items-center justify-center flex-shrink-0">
-                <i class="fas fa-envelope text-dark text-xl"></i>
+              <div class="w-12 h-12 rounded-lg bg-accent-primary/10 flex items-center justify-center flex-shrink-0 border border-accent-primary/30">
+                <i class="fas fa-envelope text-accent-primary text-lg"></i>
               </div>
               <div>
-                <h3 class="font-semibold mb-1">Email</h3>
-                <a href={`mailto:${contactInfo.email}`} class="text-muted hover:text-accent transition-colors">
+                <p class="text-xs text-muted uppercase tracking-wider mb-1" style="font-family: 'JetBrains Mono', monospace;">Email</p>
+                <a href={`mailto:${contactInfo.email}`} class="text-2xl font-medium text-light hover:text-accent-primary transition-colors" style="font-family: 'JetBrains Mono', monospace;">
                   {contactInfo.email}
                 </a>
               </div>
@@ -168,12 +167,12 @@ const socialLinks = [
 
             <!-- Phone -->
             <div class="flex items-start gap-4">
-              <div class="w-12 h-12 rounded-lg bg-gradient-accent flex items-center justify-center flex-shrink-0">
-                <i class="fas fa-phone text-dark text-xl"></i>
+              <div class="w-12 h-12 rounded-lg bg-accent-primary/10 flex items-center justify-center flex-shrink-0 border border-accent-primary/30">
+                <i class="fas fa-phone text-accent-primary text-lg"></i>
               </div>
               <div>
-                <h3 class="font-semibold mb-1">Phone</h3>
-                <a href={`tel:${contactInfo.phone}`} class="text-muted hover:text-accent transition-colors">
+                <p class="text-xs text-muted uppercase tracking-wider mb-1" style="font-family: 'JetBrains Mono', monospace;">Phone</p>
+                <a href={`tel:${contactInfo.phone}`} class="text-2xl font-medium text-light hover:text-accent-primary transition-colors" style="font-family: 'JetBrains Mono', monospace;">
                   {contactInfo.phone}
                 </a>
               </div>
@@ -181,23 +180,23 @@ const socialLinks = [
 
             <!-- Location -->
             <div class="flex items-start gap-4">
-              <div class="w-12 h-12 rounded-lg bg-gradient-accent flex items-center justify-center flex-shrink-0">
-                <i class="fas fa-map-marker-alt text-dark text-xl"></i>
+              <div class="w-12 h-12 rounded-lg bg-accent-primary/10 flex items-center justify-center flex-shrink-0 border border-accent-primary/30">
+                <i class="fas fa-map-marker-alt text-accent-primary text-lg"></i>
               </div>
               <div>
-                <h3 class="font-semibold mb-1">Location</h3>
-                <p class="text-muted">{contactInfo.location}</p>
+                <p class="text-xs text-muted uppercase tracking-wider mb-1" style="font-family: 'JetBrains Mono', monospace;">Location</p>
+                <p class="text-2xl font-medium text-light">{contactInfo.location}</p>
               </div>
             </div>
 
             <!-- Hours -->
             <div class="flex items-start gap-4">
-              <div class="w-12 h-12 rounded-lg bg-gradient-accent flex items-center justify-center flex-shrink-0">
-                <i class="fas fa-clock text-dark text-xl"></i>
+              <div class="w-12 h-12 rounded-lg bg-accent-primary/10 flex items-center justify-center flex-shrink-0 border border-accent-primary/30">
+                <i class="fas fa-clock text-accent-primary text-lg"></i>
               </div>
               <div>
-                <h3 class="font-semibold mb-1">Availability</h3>
-                <p class="text-muted">{contactInfo.availability}</p>
+                <p class="text-xs text-muted uppercase tracking-wider mb-1" style="font-family: 'JetBrains Mono', monospace;">Availability</p>
+                <p class="text-2xl font-medium text-light">{contactInfo.availability}</p>
               </div>
             </div>
           </div>
@@ -224,29 +223,20 @@ const socialLinks = [
           </div>
 
           <!-- Response Time -->
-          <div class="mt-8 card bg-gradient-accent">
-            <div class="text-dark">
-              <i class="fas fa-info-circle text-2xl mb-3 block"></i>
-              <h3 class="font-semibold mb-2">Quick Response</h3>
-              <p class="text-sm">
+          <div class="mt-8 card bg-dark-elevated border-accent-primary/30">
+            <div class="text-light">
+              <div class="flex items-center gap-3 mb-3">
+                <div class="w-10 h-10 rounded-full bg-accent-primary/20 flex items-center justify-center">
+                  <i class="fas fa-bolt text-accent-primary text-lg"></i>
+                </div>
+                <h3 class="text-xl font-semibold">Quick Response</h3>
+              </div>
+              <p class="text-base text-muted leading-relaxed">
                 I typically respond to all inquiries within 24 hours during business days.
                 For urgent matters, please call directly.
               </p>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Map Section (Optional - Placeholder) -->
-  <section class="section bg-dark-elevated">
-    <div class="container">
-      <div class="aspect-video rounded-2xl overflow-hidden bg-dark-card flex items-center justify-center">
-        <div class="text-center">
-          <i class="fas fa-map-marked-alt text-6xl text-muted opacity-20 mb-4"></i>
-          <p class="text-muted">Google Maps Embed Placeholder</p>
-          <p class="text-sm text-muted mt-2">Add your Google Maps iframe here</p>
         </div>
       </div>
     </div>

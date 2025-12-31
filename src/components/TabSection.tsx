@@ -39,34 +39,25 @@ export default function TabSection() {
 
   const contentVariants = {
     enter: {
-      x: 1000,
       opacity: 0,
-      scale: 0.8,
-      rotateY: 45,
+      y: 20,
     },
     center: {
       zIndex: 1,
-      x: 0,
       opacity: 1,
-      scale: 1,
-      rotateY: 0,
+      y: 0,
       transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 25,
-        mass: 0.5,
+        duration: 0.3,
+        ease: "easeOut"
       }
     },
     exit: {
       zIndex: 0,
-      x: -1000,
       opacity: 0,
-      scale: 0.8,
-      rotateY: -45,
+      y: -20,
       transition: {
-        type: "spring",
-        stiffness: 200,
-        damping: 25,
+        duration: 0.2,
+        ease: "easeIn"
       }
     }
   };
@@ -164,7 +155,7 @@ export default function TabSection() {
       </div>
 
       {/* Tab Content */}
-      <div className="relative overflow-hidden" style={{ perspective: '1000px' }}>
+      <div className="relative overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
             key={activeTab}

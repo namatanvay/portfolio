@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 
 interface ClientWork {
   id: number;
@@ -22,6 +22,18 @@ interface ClientShowcaseProps {
 
 export default function ClientShowcase({ clients }: ClientShowcaseProps) {
   const [activeClient, setActiveClient] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+
+  // Detect mobile device
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const tabVariants = {
     inactive: {
@@ -49,9 +61,9 @@ export default function ClientShowcase({ clients }: ClientShowcaseProps) {
 
   const contentVariants = {
     enter: {
-      x: 1000,
+      x: isMobile || prefersReducedMotion ? 0 : 1000,
       opacity: 0,
-      scale: 0.8,
+      scale: isMobile || prefersReducedMotion ? 1 : 0.8,
     },
     center: {
       zIndex: 1,
@@ -59,20 +71,22 @@ export default function ClientShowcase({ clients }: ClientShowcaseProps) {
       opacity: 1,
       scale: 1,
       transition: {
-        type: "spring",
+        type: isMobile || prefersReducedMotion ? "tween" : "spring",
         stiffness: 200,
         damping: 25,
+        duration: isMobile || prefersReducedMotion ? 0.2 : undefined,
       }
     },
     exit: {
       zIndex: 0,
-      x: -1000,
+      x: isMobile || prefersReducedMotion ? 0 : -1000,
       opacity: 0,
-      scale: 0.8,
+      scale: isMobile || prefersReducedMotion ? 1 : 0.8,
       transition: {
-        type: "spring",
+        type: isMobile || prefersReducedMotion ? "tween" : "spring",
         stiffness: 200,
         damping: 25,
+        duration: isMobile || prefersReducedMotion ? 0.2 : undefined,
       }
     }
   };
@@ -80,17 +94,18 @@ export default function ClientShowcase({ clients }: ClientShowcaseProps) {
   const itemVariants = {
     hidden: {
       opacity: 0,
-      y: 50,
-      scale: 0.9,
+      y: isMobile || prefersReducedMotion ? 0 : 50,
+      scale: isMobile || prefersReducedMotion ? 1 : 0.9,
     },
     visible: {
       opacity: 1,
       y: 0,
       scale: 1,
       transition: {
-        type: "spring",
+        type: isMobile || prefersReducedMotion ? "tween" : "spring",
         stiffness: 100,
         damping: 12,
+        duration: isMobile || prefersReducedMotion ? 0.2 : undefined,
       }
     }
   };
@@ -203,7 +218,7 @@ export default function ClientShowcase({ clients }: ClientShowcaseProps) {
                   <motion.div
                     key={item.id}
                     variants={itemVariants}
-                    whileHover={{
+                    whileHover={isMobile || prefersReducedMotion ? {} : {
                       scale: 1.05,
                       rotateY: 5,
                       z: 50,
@@ -212,16 +227,16 @@ export default function ClientShowcase({ clients }: ClientShowcaseProps) {
                     style={{ transformStyle: 'preserve-3d' }}
                   >
                     <div className="relative aspect-[4/3] bg-dark-card overflow-hidden">
-                      {/* Placeholder or Image */}
+                      {/* Thumbnail */}
                       {item.image ? (
-                        <motion.img
+                        <img
                           src={item.image}
                           alt={item.title}
-                          className="w-full h-full object-cover"
-                          initial={{ scale: 1.2, opacity: 0 }}
-                          animate={{ scale: 1, opacity: 1 }}
-                          transition={{ duration: 0.6 }}
-                          whileHover={{ scale: 1.15 }}
+                          loading="lazy"
+                          decoding="async"
+                          width="600"
+                          height="450"
+                          className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                         />
                       ) : (
                         <motion.div

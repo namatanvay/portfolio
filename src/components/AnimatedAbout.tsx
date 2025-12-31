@@ -173,7 +173,7 @@ export default function AnimatedAbout({ bio, skills, equipment }: AnimatedAboutP
                   transition={{ type: "spring", stiffness: 200 }}
                 >
                   <img
-                    src="/images/profile/profile_image.jpeg"
+                    src="/images/profile/profile_image.webp"
                     alt="Profile"
                     className="w-full h-full object-cover"
                   />

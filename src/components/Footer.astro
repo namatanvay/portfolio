@@ -2,9 +2,8 @@
 const currentYear = new Date().getFullYear();
 
 const socialLinks = [
-  { name: 'Instagram', icon: 'fab fa-instagram', url: 'https://instagram.com/yourusername' },
-  { name: 'LinkedIn', icon: 'fab fa-linkedin', url: 'https://linkedin.com/in/yourusername' },
-  { name: 'Facebook', icon: 'fab fa-facebook', url: 'https://facebook.com/yourusername' },
+  { name: 'Instagram', icon: 'fab fa-instagram', url: 'https://instagram.com/tanvayphotography' },
+  { name: 'LinkedIn', icon: 'fab fa-linkedin', url: 'https://www.linkedin.com/in/tanvay-nama-369b48198/' },
 ];
 
 const quickLinks = [
@@ -21,11 +20,11 @@ const quickLinks = [
       <!-- Brand Section -->
       <div>
         <h3 class="text-2xl font-bold text-gradient mb-4">TANVAY NAMA</h3>
-        <p class="text-muted mb-4">
+        <p class="text-base text-light mb-2">
           Professional Photography & Videography
         </p>
         <p class="text-sm text-muted">
-          Capturing moments, creating memories.
+          5+ years crafting visual stories for product, fashion, event, and lifestyle clients.
         </p>
       </div>
 
@@ -46,29 +45,29 @@ const quickLinks = [
       <!-- Contact & Social -->
       <div>
         <h4 class="text-lg font-semibold mb-4">Connect</h4>
-        <div class="mb-4">
-          <p class="text-muted mb-2">
-            <i class="fas fa-envelope mr-2"></i>
-            your.email@example.com
-          </p>
-          <p class="text-muted mb-2">
-            <i class="fas fa-phone mr-2"></i>
-            +1-234-567-8900
-          </p>
-          <p class="text-muted">
-            <i class="fas fa-map-marker-alt mr-2"></i>
-            Your City, State
+        <div class="mb-4 space-y-3">
+          <a href="mailto:tanvayphotography@gmail.com" class="flex items-center text-light hover:text-accent-primary transition-colors group">
+            <i class="fas fa-envelope mr-3 text-accent-primary"></i>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">tanvayphotography@gmail.com</span>
+          </a>
+          <a href="tel:+917231952852" class="flex items-center text-light hover:text-accent-primary transition-colors group">
+            <i class="fas fa-phone mr-3 text-accent-primary"></i>
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">+91 7231952852</span>
+          </a>
+          <p class="flex items-center text-light">
+            <i class="fas fa-map-marker-alt mr-3 text-accent-primary"></i>
+            <span>Mumbai, India</span>
           </p>
         </div>
 
         <!-- Social Icons -->
-        <div class="flex space-x-4">
+        <div class="flex space-x-5">
           {socialLinks.map((social) => (
             <a
               href={social.url}
               target="_blank"
               rel="noopener noreferrer"
-              class="text-2xl text-muted hover:text-accent transition-colors"
+              class="w-10 h-10 rounded-full bg-accent-primary/10 border border-accent-primary/30 flex items-center justify-center text-accent-primary hover:bg-accent-primary hover:text-white transition-all"
               aria-label={social.name}
             >
               <i class={social.icon}></i>

@@ -1,12 +1,14 @@
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 
 export default function FeaturedWork() {
+  const prefersReducedMotion = useReducedMotion();
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
+        staggerChildren: prefersReducedMotion ? 0 : 0.1,
       }
     }
   };
@@ -14,9 +16,9 @@ export default function FeaturedWork() {
   const itemVariants = {
     hidden: {
       opacity: 0,
-      y: 50,
-      scale: 0.8,
-      rotateY: -30,
+      y: prefersReducedMotion ? 0 : 50,
+      scale: prefersReducedMotion ? 1 : 0.8,
+      rotateY: prefersReducedMotion ? 0 : -30,
     },
     visible: {
       opacity: 1,
@@ -24,14 +26,53 @@ export default function FeaturedWork() {
       scale: 1,
       rotateY: 0,
       transition: {
-        type: "spring",
+        type: prefersReducedMotion ? "tween" : "spring",
         stiffness: 100,
         damping: 12,
+        duration: prefersReducedMotion ? 0.2 : undefined,
       }
     }
   };
 
-  const items = [1, 2, 3, 4, 5, 6];
+  // Featured portfolio items with actual images
+  const items = [
+    {
+      id: 1,
+      title: "Fashion Photography",
+      category: "Portraits",
+      image: "/images/portfolio/portraits/TKN01607.webp",
+    },
+    {
+      id: 2,
+      title: "Event Coverage",
+      category: "Events",
+      image: "/images/portfolio/events/TKN05524.webp",
+    },
+    {
+      id: 3,
+      title: "Food Photography",
+      category: "Food",
+      image: "/images/portfolio/food/TKN09388.webp",
+    },
+    {
+      id: 4,
+      title: "Portrait Session",
+      category: "Portraits",
+      image: "/images/portfolio/portraits/TKN07847.webp",
+    },
+    {
+      id: 5,
+      title: "Product Photography",
+      category: "Product",
+      image: "/images/portfolio/product/TKN02315.webp",
+    },
+    {
+      id: 6,
+      title: "Commercial Event",
+      category: "Events",
+      image: "/images/portfolio/events/TKN06043.webp",
+    },
+  ];
 
   return (
     <div>
@@ -78,9 +119,9 @@ export default function FeaturedWork() {
       >
         {items.map((item) => (
           <motion.div
-            key={item}
+            key={item.id}
             variants={itemVariants}
-            whileHover={{
+            whileHover={prefersReducedMotion ? {} : {
               scale: 1.05,
               rotateY: 5,
               z: 50,
@@ -93,24 +134,16 @@ export default function FeaturedWork() {
             style={{ transformStyle: 'preserve-3d' }}
           >
             <div className="relative aspect-[4/3] bg-dark-card overflow-hidden">
-              {/* Placeholder */}
-              <motion.div
-                className="absolute inset-0 flex items-center justify-center"
-                whileHover={{ scale: 1.1 }}
-                transition={{ type: "spring" }}
-              >
-                <motion.i
-                  className="fas fa-camera text-8xl text-muted opacity-20"
-                  animate={{
-                    rotate: [0, 10, -10, 0],
-                  }}
-                  transition={{
-                    duration: 3,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
-              </motion.div>
+              {/* Image */}
+              <img
+                src={item.image}
+                alt={item.title}
+                loading="lazy"
+                decoding="async"
+                width="800"
+                height="600"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+              />
 
               {/* Overlay */}
               <motion.div
@@ -124,8 +157,8 @@ export default function FeaturedWork() {
                   whileHover={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.1 }}
                 >
-                  <h3 className="text-2xl font-semibold mb-2">Project {item}</h3>
-                  <p className="text-muted">Photography</p>
+                  <h3 className="text-2xl font-semibold mb-2">{item.title}</h3>
+                  <p className="text-muted">{item.category}</p>
                 </motion.div>
               </motion.div>
 
