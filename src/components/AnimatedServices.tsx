@@ -444,7 +444,8 @@ export default function AnimatedServices({ services, testimonials, processSteps 
             ))}
 
             <motion.h2
-              className="text-4xl font-bold mb-4 text-dark relative z-10"
+              className="text-4xl font-bold mb-4 relative z-10"
+              style={{ color: '#0D0D0D' }}
               animate={{
                 scale: [1, 1.02, 1],
               }}
@@ -456,7 +457,8 @@ export default function AnimatedServices({ services, testimonials, processSteps 
               Ready to Get Started?
             </motion.h2>
             <motion.p
-              className="text-dark text-lg mb-8 max-w-2xl mx-auto relative z-10"
+              className="text-lg mb-8 max-w-2xl mx-auto relative z-10"
+              style={{ color: '#0D0D0D' }}
               initial={{ opacity: 0 }}
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
@@ -466,9 +468,17 @@ export default function AnimatedServices({ services, testimonials, processSteps 
             </motion.p>
             <motion.a
               href="/contact"
-              className="btn bg-dark text-light hover:bg-dark-elevated relative z-10"
+              className="btn relative z-10"
+              style={{
+                backgroundColor: '#0D0D0D',
+                color: '#FFFFFF',
+                padding: '1rem 2rem',
+                borderRadius: '0.5rem',
+                fontWeight: '600'
+              }}
               whileHover={{
                 scale: 1.1,
+                backgroundColor: '#262626',
                 boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
               }}
               whileTap={{ scale: 0.95 }}
