@@ -4,7 +4,11 @@ import FeaturedWork from './FeaturedWork';
 import ServicesTab from './ServicesTab';
 import TestimonialsTab from './TestimonialsTab';
 
-export default function TabSection() {
+interface TabSectionProps {
+  featuredImages: string[];
+}
+
+export default function TabSection({ featuredImages }: TabSectionProps) {
   const [activeTab, setActiveTab] = useState('work');
 
   const tabs = [
@@ -78,13 +82,13 @@ export default function TabSection() {
   const renderContent = () => {
     switch (activeTab) {
       case 'work':
-        return <FeaturedWork />;
+        return <FeaturedWork featuredImages={featuredImages} />;
       case 'services':
         return <ServicesTab />;
       case 'testimonials':
         return <TestimonialsTab />;
       default:
-        return <FeaturedWork />;
+        return <FeaturedWork featuredImages={featuredImages} />;
     }
   };
 

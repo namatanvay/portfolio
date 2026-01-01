@@ -5,205 +5,89 @@ import Footer from "../components/Footer.astro";
 import Gallery from "../components/Gallery";
 import ClientShowcase from "../components/ClientShowcase";
 
-// SIMPLE: Just edit this array to add your images/videos!
+// ============================================
+// AUTOMATIC IMAGE DETECTION AT BUILD TIME
+// ============================================
+// All images are automatically discovered from folders
+// Just add images to the folders and rebuild!
+
+// Dynamically load event images
+const eventImageModules = import.meta.glob('/public/images/events/**/*.{webp,jpg,jpeg,png}', { eager: true });
+
+// Dynamically load portfolio images by category
+const portraitImageModules = import.meta.glob('/public/images/portfolio/portraits/*.{webp,jpg,jpeg,png}', { eager: true });
+const foodImageModules = import.meta.glob('/public/images/portfolio/food/*.{webp,jpg,jpeg,png}', { eager: true });
+const productImageModules = import.meta.glob('/public/images/portfolio/product/*.{webp,jpg,jpeg,png}', { eager: true });
+
+// Helper function to create portfolio items from image modules
+function createPortfolioItems(modules: Record<string, any>, category: string, startId: number) {
+  const items = [];
+  let id = startId;
+
+  for (const [path, module] of Object.entries(modules)) {
+    const fileName = path.split('/').pop()?.replace(/\.(webp|jpg|jpeg|png)$/i, '') || '';
+    const publicPath = path.replace('/public', '');
+
+    items.push({
+      id: id++,
+      title: fileName.split(/[-_]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+      category: category,
+      image: publicPath,
+      type: 'photo' as const,
+    });
+  }
+
+  return items;
+}
+
+// Create portfolio items automatically
+const portraitItems = createPortfolioItems(portraitImageModules, 'portraits-fashion', 1);
+const foodItems = createPortfolioItems(foodImageModules, 'food', 1000);
+const productItems = createPortfolioItems(productImageModules, 'product', 2000);
+
+// Organize events with deduplication
+const eventItemsMap = new Map(); // Use Map to deduplicate by image path
+let eventId = 5000; // Start event IDs from 5000 to avoid conflicts
+
+for (const [path, module] of Object.entries(eventImageModules)) {
+  const match = path.match(/\/events\/([^\/]+)\/([^\/]+)$/);
+  if (match) {
+    const eventName = match[1];
+    const fileName = match[2];
+    const publicPath = path.replace('/public', '');
+
+    // Only add if this image path doesn't already exist
+    if (!eventItemsMap.has(publicPath)) {
+      eventItemsMap.set(publicPath, {
+        id: eventId++,
+        title: eventName.split(/[-_]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+        category: 'events',
+        eventName: eventName,
+        image: publicPath,
+        type: 'photo' as const,
+      });
+    }
+  }
+}
+
+const eventItems = Array.from(eventItemsMap.values());
+
+console.log(`📁 Auto-detected images:`);
+console.log(`   - Portraits: ${portraitItems.length} photos`);
+console.log(`   - Food: ${foodItems.length} photos`);
+console.log(`   - Product: ${productItems.length} photos`);
+console.log(`   - Events: ${eventItems.length} photos from ${new Set(eventItems.map(e => e.eventName)).size} events`);
+
+// ============================================
+// MANUALLY ADD VIDEOS HERE
+// ============================================
+// Photos are auto-detected, but videos need URLs
+// Add your video URLs below (Cloudflare, Google Drive, etc.)
 //
-// For images: Add image URL
-// For videos: Add video URL (and optional image for thumbnail)
-// Google Drive: Use direct links from GOOGLE_DRIVE_GUIDE.md
-//
-const portfolioItems = [
-  // Portraits & Fashion (27 photos + 1 video)
+const manualVideos = [
+  // Portraits & Fashion Videos
   {
-    id: 1,
-    title: "Portrait Session",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/DSC01007.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 2,
-    title: "Fashion Portrait",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/DSC02316.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 3,
-    title: "Portrait Shoot",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/DSC02334.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 4,
-    title: "Fashion Photography",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/IMG_0280.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 5,
-    title: "Portrait",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/IMG_0477.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 6,
-    title: "Portrait Session",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/IMG_0479.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 7,
-    title: "Fashion Portrait",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN00570.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 8,
-    title: "Portrait Photography",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN00613-2.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 9,
-    title: "Fashion Shoot",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN00629.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 10,
-    title: "Portrait",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN00634-2.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 11,
-    title: "Fashion Portrait",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN00818.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 12,
-    title: "Portrait Session",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN00934-2.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 13,
-    title: "Fashion Photography",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN01538.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 14,
-    title: "Portrait",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN01607.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 15,
-    title: "Fashion Shoot",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN01681.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 16,
-    title: "Portrait Photography",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN01685.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 17,
-    title: "Fashion Portrait",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN01737.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 18,
-    title: "Portrait Session",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN01867.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 19,
-    title: "Fashion Photography",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN01896.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 20,
-    title: "Portrait",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN02338.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 21,
-    title: "Fashion Shoot",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN05535.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 22,
-    title: "Portrait Photography",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN07846.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 23,
-    title: "Fashion Portrait",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN07847.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 24,
-    title: "Portrait Session",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN07848.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 25,
-    title: "Fashion Photography",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN07849.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 26,
-    title: "Portrait",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN07925.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 27,
-    title: "Fashion Shoot",
-    category: "portraits-fashion",
-    image: "/images/portfolio/portraits/TKN07926.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 28,
+    id: 10000,
     title: "Fashion Video - Valentino",
     category: "portraits-fashion",
     image: "/images/video-thumbnails/valentino-song.webp",
@@ -211,149 +95,9 @@ const portfolioItems = [
     type: "video" as const,
   },
 
-  // Events (20 photos)
+  // Events Videos
   {
-    id: 29,
-    title: "Event Coverage",
-    category: "events",
-    image: "/images/portfolio/events/TKN00957.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 30,
-    title: "Event Photography",
-    category: "events",
-    image: "/images/portfolio/events/TKN00987.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 31,
-    title: "Event Moments",
-    category: "events",
-    image: "/images/portfolio/events/TKN00994.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 32,
-    title: "Event Coverage",
-    category: "events",
-    image: "/images/portfolio/events/TKN03698.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 33,
-    title: "Event Photography",
-    category: "events",
-    image: "/images/portfolio/events/TKN03718.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 34,
-    title: "Event Highlights",
-    category: "events",
-    image: "/images/portfolio/events/TKN03979.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 35,
-    title: "Event Coverage",
-    category: "events",
-    image: "/images/portfolio/events/TKN04932(1).webp",
-    type: "photo" as const,
-  },
-  {
-    id: 36,
-    title: "Event Photography",
-    category: "events",
-    image: "/images/portfolio/events/TKN04932.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 37,
-    title: "Event Moments",
-    category: "events",
-    image: "/images/portfolio/events/TKN05019.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 38,
-    title: "Event Coverage",
-    category: "events",
-    image: "/images/portfolio/events/TKN05524.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 39,
-    title: "Event Photography",
-    category: "events",
-    image: "/images/portfolio/events/TKN05670.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 40,
-    title: "Event Highlights",
-    category: "events",
-    image: "/images/portfolio/events/TKN05686.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 41,
-    title: "Event Coverage",
-    category: "events",
-    image: "/images/portfolio/events/TKN05908.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 42,
-    title: "Event Photography",
-    category: "events",
-    image: "/images/portfolio/events/TKN06043.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 43,
-    title: "Event Moments",
-    category: "events",
-    image: "/images/portfolio/events/TKN06304.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 44,
-    title: "Event Coverage",
-    category: "events",
-    image: "/images/portfolio/events/TKN06730.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 45,
-    title: "Event Photography",
-    category: "events",
-    image: "/images/portfolio/events/TKN07892.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 46,
-    title: "Event Highlights",
-    category: "events",
-    image: "/images/portfolio/events/TKN07988.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 47,
-    title: "Event Coverage",
-    category: "events",
-    image: "/images/portfolio/events/TKN08025.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 48,
-    title: "Event Photography",
-    category: "events",
-    image: "/images/portfolio/events/TKN08303.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 49,
+    id: 10001,
     title: "Behind the Scenes",
     category: "events",
     image: "/images/video-thumbnails/bts-reel.webp",
@@ -361,7 +105,7 @@ const portfolioItems = [
     type: "video" as const,
   },
   {
-    id: 50,
+    id: 10002,
     title: "BTS - Shooting Reel",
     category: "events",
     image: "/images/video-thumbnails/bts-shooting-reel.webp",
@@ -369,7 +113,7 @@ const portfolioItems = [
     type: "video" as const,
   },
   {
-    id: 51,
+    id: 10003,
     title: "Event Video Coverage",
     category: "events",
     image: "/images/video-thumbnails/bts-shoot-part1.webp",
@@ -377,149 +121,9 @@ const portfolioItems = [
     type: "video" as const,
   },
 
-  // Food (20 photos + 4 videos)
+  // Food Videos
   {
-    id: 52,
-    title: "Food Photography",
-    category: "food",
-    image: "/images/portfolio/food/DSC02218.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 53,
-    title: "Culinary Shot",
-    category: "food",
-    image: "/images/portfolio/food/DSC02248.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 54,
-    title: "Food Styling",
-    category: "food",
-    image: "/images/portfolio/food/TAUR1818.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 55,
-    title: "Dish Photography",
-    category: "food",
-    image: "/images/portfolio/food/TKN00007.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 56,
-    title: "Food Photography",
-    category: "food",
-    image: "/images/portfolio/food/TKN09211.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 57,
-    title: "Culinary Art",
-    category: "food",
-    image: "/images/portfolio/food/TKN09220.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 58,
-    title: "Food Styling",
-    category: "food",
-    image: "/images/portfolio/food/TKN09226.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 59,
-    title: "Dish Photography",
-    category: "food",
-    image: "/images/portfolio/food/TKN09246.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 60,
-    title: "Food Photography",
-    category: "food",
-    image: "/images/portfolio/food/TKN09330.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 61,
-    title: "Culinary Shot",
-    category: "food",
-    image: "/images/portfolio/food/TKN09351.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 62,
-    title: "Food Styling",
-    category: "food",
-    image: "/images/portfolio/food/TKN09361.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 63,
-    title: "Dish Photography",
-    category: "food",
-    image: "/images/portfolio/food/TKN09388.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 64,
-    title: "Food Photography",
-    category: "food",
-    image: "/images/portfolio/food/TKN09470.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 65,
-    title: "Culinary Art",
-    category: "food",
-    image: "/images/portfolio/food/TKN09479.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 66,
-    title: "Food Styling",
-    category: "food",
-    image: "/images/portfolio/food/TKN09561.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 67,
-    title: "Dish Photography",
-    category: "food",
-    image: "/images/portfolio/food/TKN09817.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 68,
-    title: "Food Photography",
-    category: "food",
-    image: "/images/portfolio/food/TKN09894 1.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 69,
-    title: "Culinary Shot",
-    category: "food",
-    image: "/images/portfolio/food/TKN09897 1.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 70,
-    title: "Food Styling",
-    category: "food",
-    image: "/images/portfolio/food/UGUM2014.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 71,
-    title: "Dish Photography",
-    category: "food",
-    image: "/images/portfolio/food/VEEU5464.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 72,
+    id: 10004,
     title: "Meraki Art Cafe",
     category: "food",
     image: "/images/video-thumbnails/meraki-art-cafe.webp",
@@ -527,7 +131,7 @@ const portfolioItems = [
     type: "video" as const,
   },
   {
-    id: 73,
+    id: 10005,
     title: "Meraki Cafe Announcement",
     category: "food",
     image: "/images/video-thumbnails/meraki-art-cafe-announcement.webp",
@@ -535,7 +139,7 @@ const portfolioItems = [
     type: "video" as const,
   },
   {
-    id: 74,
+    id: 10006,
     title: "Meraki Food",
     category: "food",
     image: "/images/video-thumbnails/meraki-food.webp",
@@ -543,141 +147,22 @@ const portfolioItems = [
     type: "video" as const,
   },
   {
-    id: 75,
+    id: 10007,
     title: "Meraki Pizza",
     category: "food",
     image: "/images/video-thumbnails/meraki-food-pizza.webp",
     video: "https://res.cloudinary.com/de6djdkmi/video/upload/v1767187275/meraki-food-pizza_fmz3q6.mp4",
     type: "video" as const,
   },
+];
 
-  // Product Photography (18 photos)
-  {
-    id: 76,
-    title: "Product Photography",
-    category: "product",
-    image: "/images/portfolio/product/TKN00057.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 77,
-    title: "Commercial Product",
-    category: "product",
-    image: "/images/portfolio/product/TKN00159.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 78,
-    title: "Product Shoot",
-    category: "product",
-    image: "/images/portfolio/product/TKN00175.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 79,
-    title: "Product Photography",
-    category: "product",
-    image: "/images/portfolio/product/TKN00176.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 80,
-    title: "Commercial Product",
-    category: "product",
-    image: "/images/portfolio/product/TKN00242.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 81,
-    title: "Product Shoot",
-    category: "product",
-    image: "/images/portfolio/product/TKN00925.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 82,
-    title: "Product Photography",
-    category: "product",
-    image: "/images/portfolio/product/TKN00995.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 83,
-    title: "Commercial Product",
-    category: "product",
-    image: "/images/portfolio/product/TKN01787.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 84,
-    title: "Product Shoot",
-    category: "product",
-    image: "/images/portfolio/product/TKN02209.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 85,
-    title: "Product Photography",
-    category: "product",
-    image: "/images/portfolio/product/TKN02315.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 86,
-    title: "Commercial Product",
-    category: "product",
-    image: "/images/portfolio/product/TKN02338.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 87,
-    title: "Product Shoot",
-    category: "product",
-    image: "/images/portfolio/product/TKN02347.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 88,
-    title: "Product Photography",
-    category: "product",
-    image: "/images/portfolio/product/TKN02361.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 89,
-    title: "Commercial Product",
-    category: "product",
-    image: "/images/portfolio/product/TKN02426.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 90,
-    title: "Product Shoot",
-    category: "product",
-    image: "/images/portfolio/product/TKN03151.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 91,
-    title: "Product Photography",
-    category: "product",
-    image: "/images/portfolio/product/TKN04003.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 92,
-    title: "Commercial Product",
-    category: "product",
-    image: "/images/portfolio/product/TKN04047.webp",
-    type: "photo" as const,
-  },
-  {
-    id: 93,
-    title: "Product Shoot",
-    category: "product",
-    image: "/images/portfolio/product/WTZL2150.webp",
-    type: "photo" as const,
-  },
+// Combine all portfolio items
+const portfolioItems = [
+  ...portraitItems,
+  ...foodItems,
+  ...productItems,
+  ...eventItems,
+  ...manualVideos,
 ];
 
 // Client work showcase
@@ -720,14 +205,14 @@ const clients = [
         id: 201,
         title: "Conference Coverage",
         category: "events",
-        image: "/images/portfolio/events/TKN05524.webp",
+        image: "/images/events/MG/TKN05524.webp",
         type: "photo" as const,
       },
       {
         id: 202,
         title: "Event Networking",
         category: "events",
-        image: "/images/portfolio/events/TKN06043.webp",
+        image: "/images/events/MG/TKN06043.webp",
         type: "photo" as const,
       },
       {

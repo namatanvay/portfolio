@@ -1,15 +1,18 @@
 import { motion, useReducedMotion } from 'motion/react';
 import { useState, useEffect } from 'react';
 
-// Use actual files from portfolio
-const portfolioImages = [
-  '/images/portfolio/portraits/DSC01007.webp',
-  '/images/portfolio/portraits/DSC02316.webp',
-  '/images/portfolio/food/DSC02218.webp',
-  '/images/portfolio/events/TKN00957.webp',
-];
+interface AnimatedHeroProps {
+  heroImages: string[];
+}
 
-export default function AnimatedHero() {
+export default function AnimatedHero({ heroImages }: AnimatedHeroProps) {
+  // Fallback images if none provided
+  const portfolioImages = heroImages.length > 0 ? heroImages : [
+    '/images/hero/DSC01007.webp',
+    '/images/hero/DSC02316.webp',
+    '/images/hero/DSC02218.webp',
+    '/images/hero/TKN00957.webp',
+  ];
   const prefersReducedMotion = useReducedMotion();
   const [isMobile, setIsMobile] = useState(false);
 

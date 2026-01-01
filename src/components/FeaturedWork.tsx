@@ -1,6 +1,10 @@
 import { motion, useReducedMotion } from 'motion/react';
 
-export default function FeaturedWork() {
+interface FeaturedWorkProps {
+  featuredImages: string[];
+}
+
+export default function FeaturedWork({ featuredImages }: FeaturedWorkProps) {
   const prefersReducedMotion = useReducedMotion();
 
   const containerVariants = {
@@ -34,45 +38,16 @@ export default function FeaturedWork() {
     }
   };
 
-  // Featured portfolio items with actual images (optimized separately)
-  const items = [
-    {
-      id: 1,
-      title: "Fashion Photography",
-      category: "Portraits",
-      image: "/images/featured/TKN01607.webp",
-    },
-    {
-      id: 2,
-      title: "Event Coverage",
-      category: "Events",
-      image: "/images/featured/TKN05524.webp",
-    },
-    {
-      id: 3,
-      title: "Food Photography",
-      category: "Food",
-      image: "/images/featured/TKN09388.webp",
-    },
-    {
-      id: 4,
-      title: "Portrait Session",
-      category: "Portraits",
-      image: "/images/featured/TKN07847.webp",
-    },
-    {
-      id: 5,
-      title: "Product Photography",
-      category: "Product",
-      image: "/images/featured/TKN02315.webp",
-    },
-    {
-      id: 6,
-      title: "Commercial Event",
-      category: "Events",
-      image: "/images/featured/TKN06043.webp",
-    },
-  ];
+  // Auto-generate items from featured images
+  const items = featuredImages.map((imagePath, index) => {
+    const fileName = imagePath.split('/').pop()?.replace(/\.(webp|jpg|jpeg|png)$/i, '') || '';
+    return {
+      id: index + 1,
+      title: fileName.split(/[-_]/).map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' '),
+      category: "Featured",
+      image: imagePath,
+    };
+  });
 
   return (
     <div>

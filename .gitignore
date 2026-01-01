@@ -28,10 +28,11 @@ pnpm-debug.log*
 # claude code
 .claude/
 
-FIXES_APPLIED.md
-UPDATES.md
-# Conversion scripts
-convert-to-webp.cjs
+# Temporary files and transcripts
+*.txt
+
+# Optimization output folders
+public/images/portfolio-optimized/
 
 # Video files - too large for GitHub and Cloudflare, host on Google Drive/R2 instead
 public/videos/**/*.mp4

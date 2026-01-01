@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import EventsSection from './EventsSection';
 
 interface GalleryItem {
   id: number;
   title: string;
   category: string;
+  eventName?: string;
   image: string;
   video?: string;
   type: 'photo' | 'video';
@@ -80,24 +82,32 @@ export default function Gallery({ items }: GalleryProps) {
         ))}
       </div>
 
-      {/* Gallery Grid - Optimized */}
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
-        <AnimatePresence>
-          {filteredItems.map((item, index) => (
-            <motion.div
-              key={item.id}
-              initial={prefersReducedMotion || isMobile ? { opacity: 0 } : { opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0 }}
-              transition={{
-                duration: 0.2,
-                delay: isMobile ? 0 : Math.min(index * 0.03, 0.3)
-              }}
-              onClick={() => setSelectedItem(item)}
-              className={`relative bg-dark-card rounded-lg overflow-hidden cursor-pointer group ${
-                item.type === 'video' ? 'aspect-[9/16]' : 'aspect-square'
-              }`}
-            >
+      {/* Events Section - Expandable */}
+      {activeFilter === 'events' ? (
+        <EventsSection
+          eventItems={allFilteredItems.filter(item => item.eventName) as any}
+          onImageClick={setSelectedItem}
+        />
+      ) : (
+        <>
+          {/* Gallery Grid - Optimized */}
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 md:gap-6">
+            <AnimatePresence>
+              {filteredItems.map((item, index) => (
+                <motion.div
+                  key={item.id}
+                  initial={prefersReducedMotion || isMobile ? { opacity: 0 } : { opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{
+                    duration: 0.2,
+                    delay: isMobile ? 0 : Math.min(index * 0.03, 0.3)
+                  }}
+                  onClick={() => setSelectedItem(item)}
+                  className={`relative bg-dark-card rounded-lg overflow-hidden cursor-pointer group ${
+                    item.type === 'video' ? 'aspect-[9/16]' : 'aspect-square'
+                  }`}
+                >
               {/* Thumbnail */}
               {item.image ? (
                 <img
@@ -134,17 +144,19 @@ export default function Gallery({ items }: GalleryProps) {
         </AnimatePresence>
       </div>
 
-      {/* Load More Button */}
-      {hasMore && (
-        <div className="text-center mt-8 sm:mt-12">
-          <button
-            onClick={loadMore}
-            className="btn btn-primary px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg"
-          >
-            Load More ({allFilteredItems.length - itemsToShow})
-            <i className="fas fa-chevron-down ml-2"></i>
-          </button>
-        </div>
+          {/* Load More Button */}
+          {hasMore && (
+            <div className="text-center mt-8 sm:mt-12">
+              <button
+                onClick={loadMore}
+                className="btn btn-primary px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg"
+              >
+                Load More ({allFilteredItems.length - itemsToShow})
+                <i className="fas fa-chevron-down ml-2"></i>
+              </button>
+            </div>
+          )}
+        </>
       )}
 
       {/* Lightbox Modal - Simplified */}

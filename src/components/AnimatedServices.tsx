@@ -1,11 +1,12 @@
 import { motion } from 'motion/react';
-import { useState } from 'react';
 
 interface Service {
   icon: string;
   title: string;
   description: string;
   features: string[];
+  portfolioLink?: string;  // Optional link to portfolio category
+  color: string;  // Color theme for the card
 }
 
 interface Testimonial {
@@ -30,35 +31,23 @@ interface AnimatedServicesProps {
 }
 
 export default function AnimatedServices({ services, testimonials, processSteps }: AnimatedServicesProps) {
-  const [hoveredService, setHoveredService] = useState<number | null>(null);
-
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.2,
       }
     }
   };
 
   const itemVariants = {
-    hidden: {
-      y: 60,
-      opacity: 0,
-      scale: 0.9,
-      rotateX: -20,
-    },
+    hidden: { y: 30, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      scale: 1,
-      rotateX: 0,
       transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 12,
+        duration: 0.4,
       }
     }
   };
@@ -66,14 +55,12 @@ export default function AnimatedServices({ services, testimonials, processSteps 
   return (
     <div className="relative overflow-hidden">
       {/* Hero Section */}
-      <section className="section pt-32 bg-dark-elevated text-center relative">
-
-        <div className="container relative z-10">
+      <section className="section pt-32 bg-dark-elevated text-center">
+        <div className="container">
           <motion.h1
             className="text-5xl md:text-6xl font-bold mb-6"
-            initial={{ opacity: 0, y: 50, scale: 0.9 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ type: "spring", stiffness: 100 }}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
           >
             <span className="gradient-text">Services</span>
           </motion.h1>
@@ -81,18 +68,18 @@ export default function AnimatedServices({ services, testimonials, processSteps 
             className="text-light text-xl mb-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
+            transition={{ delay: 0.1 }}
           >
             Professional Photography & Videography Solutions
           </motion.p>
           <motion.p
             className="text-muted max-w-3xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
           >
-            From intimate portraits to grand weddings, from corporate events to creative video production,
-            I offer comprehensive photography and videography services tailored to your needs.
+            From intimate portraits to grand events, from creative food photography to professional video production,
+            I offer comprehensive services tailored to your needs.
           </motion.p>
         </div>
       </section>
@@ -110,122 +97,89 @@ export default function AnimatedServices({ services, testimonials, processSteps 
             {services.map((service, i) => (
               <motion.div
                 key={i}
-                className="card flex flex-col h-full"
+                className="card-gradient flex flex-col h-full relative overflow-hidden"
                 variants={itemVariants}
-                whileHover={{
-                  scale: 1.05,
-                  rotateY: 5,
-                  z: 50,
+                whileHover={{ y: -8 }}
+                style={{
+                  background: `linear-gradient(135deg, ${service.color}15 0%, ${service.color}05 100%)`,
+                  borderLeft: `4px solid ${service.color}`
                 }}
-                onHoverStart={() => setHoveredService(i)}
-                onHoverEnd={() => setHoveredService(null)}
               >
-                <motion.div
-                  className={`text-5xl mb-4 ${
-                    i % 3 === 0 ? 'text-primary' :
-                    i % 3 === 1 ? 'text-secondary' : 'text-tertiary'
-                  }`}
-                  animate={hoveredService === i ? {
-                    rotate: 360,
-                    scale: 1.2,
-                  } : {
-                    rotate: [0, 10, -10, 0],
-                  }}
-                  transition={{
-                    rotate: hoveredService === i ? { duration: 0.6 } : { duration: 3, repeat: Infinity },
-                    scale: { duration: 0.3 },
-                  }}
+                {/* Icon */}
+                <div
+                  className="text-5xl mb-4"
+                  style={{ color: service.color }}
                 >
                   <i className={`fas ${service.icon}`}></i>
-                </motion.div>
+                </div>
+
+                {/* Content */}
                 <h3 className="text-2xl font-bold mb-3">{service.title}</h3>
                 <p className="text-muted mb-6 flex-grow">{service.description}</p>
 
+                {/* Features */}
                 <ul className="space-y-2 mb-6">
                   {service.features.map((feature, j) => (
-                    <motion.li
-                      key={j}
-                      className="flex items-start text-sm text-muted"
-                      initial={{ opacity: 0, x: -20 }}
-                      whileInView={{ opacity: 1, x: 0 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: i * 0.1 + j * 0.05 }}
-                      whileHover={{ x: 5, color: 'var(--accent-primary)' }}
-                    >
-                      <motion.i
-                        className="fas fa-check text-primary mr-2 mt-1"
-                        initial={{ scale: 0, rotate: -180 }}
-                        whileInView={{ scale: 1, rotate: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: i * 0.1 + j * 0.05 + 0.2 }}
+                    <li key={j} className="flex items-start text-sm text-muted">
+                      <i
+                        className="fas fa-check-circle mr-2 mt-1"
+                        style={{ color: service.color }}
                       />
                       <span>{feature}</span>
-                    </motion.li>
+                    </li>
                   ))}
                 </ul>
+
+                {/* Portfolio Link Button */}
+                {service.portfolioLink && (
+                  <a
+                    href={service.portfolioLink}
+                    className="btn-samples mt-auto"
+                    style={{
+                      borderColor: service.color,
+                      color: service.color
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = service.color;
+                      e.currentTarget.style.color = '#FFFFFF';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = 'transparent';
+                      e.currentTarget.style.color = service.color;
+                    }}
+                  >
+                    <i className="fas fa-images mr-2"></i>
+                    View Samples
+                  </a>
+                )}
               </motion.div>
             ))}
           </motion.div>
 
           <motion.div
             className="text-center mt-12"
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
-            <motion.a
+            <a
               href="/contact"
               className="btn btn-primary"
-              whileHover={{
-                scale: 1.1,
-                boxShadow: '0 0 30px rgba(100, 255, 218, 0.6)',
-              }}
-              whileTap={{ scale: 0.95 }}
-              animate={{
-                y: [0, -5, 0],
-              }}
-              transition={{
-                y: {
-                  duration: 2,
-                  repeat: Infinity,
-                }
-              }}
             >
-              <motion.i
-                className="fas fa-envelope mr-2"
-                animate={{ rotate: [0, -15, 15, 0] }}
-                transition={{ duration: 2, repeat: Infinity }}
-              />
+              <i className="fas fa-envelope mr-2" />
               Request a Quote
-            </motion.a>
+            </a>
           </motion.div>
         </div>
       </section>
 
       {/* Process Section */}
-      <section className="section bg-dark-elevated relative overflow-hidden">
-        {/* Background Animation */}
-        <motion.div
-          className="absolute inset-0 opacity-5"
-          animate={{
-            backgroundPosition: ['0% 0%', '100% 100%'],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            ease: "linear",
-          }}
-          style={{
-            background: 'radial-gradient(circle, var(--accent-primary) 1px, transparent 1px)',
-            backgroundSize: '50px 50px',
-          }}
-        />
-
-        <div className="container relative z-10">
+      <section className="section bg-dark-elevated">
+        <div className="container">
           <motion.div
             className="text-center mb-12"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
             <h2 className="text-4xl font-bold mb-4">
@@ -236,57 +190,32 @@ export default function AnimatedServices({ services, testimonials, processSteps 
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-8 relative">
+          <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
             {processSteps.map((step, i) => (
               <motion.div
                 key={i}
                 className="text-center relative"
-                initial={{ opacity: 0, y: 50, scale: 0.8 }}
-                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{
-                  delay: i * 0.1,
-                  type: "spring",
-                  stiffness: 100,
-                }}
+                transition={{ delay: i * 0.1 }}
               >
-                <motion.div
-                  className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-white text-dark font-bold text-2xl mb-4 relative z-10"
-                  whileHover={{
-                    scale: 1.2,
-                    rotate: 360,
-                    transition: {
-                      type: "spring",
-                      stiffness: 200,
-                    }
-                  }}
-                  animate={{
-                    boxShadow: [
-                      '0 0 0px rgba(255, 255, 255, 0.3)',
-                      '0 0 20px rgba(255, 255, 255, 0.6)',
-                      '0 0 0px rgba(255, 255, 255, 0.3)',
-                    ],
-                  }}
-                  transition={{
-                    duration: 2,
-                    repeat: Infinity,
-                    delay: i * 0.3,
+                <div
+                  className="inline-flex items-center justify-center w-16 h-16 rounded-full font-bold text-2xl mb-4"
+                  style={{
+                    background: 'linear-gradient(135deg, var(--accent-primary), var(--accent-secondary))',
+                    color: '#FFFFFF'
                   }}
                 >
                   {step.number}
-                </motion.div>
+                </div>
                 <h3 className="text-xl font-semibold mb-3">{step.title}</h3>
                 <p className="text-muted text-sm">{step.description}</p>
 
                 {/* Connecting Line */}
                 {i < processSteps.length - 1 && (
-                  <motion.div
-                    className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-gradient-accent opacity-30"
+                  <div className="hidden md:block absolute top-8 left-1/2 w-full h-0.5 bg-gradient-accent opacity-20"
                     style={{ transform: 'translateX(50%)' }}
-                    initial={{ scaleX: 0 }}
-                    whileInView={{ scaleX: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: i * 0.1 + 0.5, duration: 0.5 }}
                   />
                 )}
               </motion.div>
@@ -300,8 +229,8 @@ export default function AnimatedServices({ services, testimonials, processSteps 
         <div className="container">
           <motion.div
             className="text-center mb-12"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
           >
             <h2 className="text-4xl font-bold mb-4">
@@ -324,56 +253,28 @@ export default function AnimatedServices({ services, testimonials, processSteps 
                 key={i}
                 className="card flex flex-col h-full"
                 variants={itemVariants}
-                whileHover={{
-                  scale: 1.05,
-                  rotateY: 5,
-                  boxShadow: '0 20px 40px rgba(100, 255, 218, 0.3)',
-                }}
               >
                 {/* Stars */}
                 <div className="flex gap-1 mb-4">
                   {Array.from({ length: testimonial.rating }).map((_, j) => (
-                    <motion.i
+                    <i
                       key={j}
-                      className="fas fa-star text-tertiary"
-                      initial={{ scale: 0, rotate: -180 }}
-                      whileInView={{ scale: 1, rotate: 0 }}
-                      viewport={{ once: true }}
-                      transition={{
-                        delay: i * 0.1 + j * 0.1,
-                        type: "spring",
-                        stiffness: 200,
-                      }}
-                      whileHover={{
-                        scale: 1.3,
-                        rotate: 360,
-                      }}
+                      className="fas fa-star"
+                      style={{ color: '#FFD700' }}
                     />
                   ))}
                 </div>
 
                 {/* Quote */}
-                <motion.p
-                  className="text-light mb-6 italic flex-grow"
-                  initial={{ opacity: 0 }}
-                  whileInView={{ opacity: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: i * 0.1 + 0.3 }}
-                >
+                <p className="text-light mb-6 italic flex-grow">
                   "{testimonial.text}"
-                </motion.p>
+                </p>
 
                 {/* Author */}
                 <div className="flex items-center gap-4 border-t border-gray-700 pt-4">
-                  <motion.div
-                    className="w-12 h-12 rounded-full bg-dark-card flex items-center justify-center"
-                    whileHover={{
-                      scale: 1.2,
-                      rotate: 360,
-                    }}
-                  >
+                  <div className="w-12 h-12 rounded-full bg-dark-card flex items-center justify-center">
                     <i className="fas fa-user text-muted"></i>
-                  </motion.div>
+                  </div>
                   <div>
                     <p className="font-semibold">{testimonial.name}</p>
                     <p className="text-sm text-muted">{testimonial.role}</p>
@@ -389,33 +290,22 @@ export default function AnimatedServices({ services, testimonials, processSteps 
       {/* CTA Section */}
       <section className="section">
         <div className="container">
-          <motion.div
-            className="card bg-white text-center py-16 relative overflow-hidden"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            whileHover={{ scale: 1.02 }}
-          >
-
+          <div className="card bg-white text-center py-16">
             <h2
-              className="text-4xl font-bold mb-4 relative z-10"
+              className="text-4xl font-bold mb-4"
               style={{ color: '#0D0D0D' }}
             >
               Ready to Get Started?
             </h2>
-            <motion.p
-              className="text-lg mb-8 max-w-2xl mx-auto relative z-10"
+            <p
+              className="text-lg mb-8 max-w-2xl mx-auto"
               style={{ color: '#0D0D0D' }}
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
             >
               Let's discuss your project and create something amazing together. Contact me for a free consultation.
-            </motion.p>
-            <motion.a
+            </p>
+            <a
               href="/contact"
-              className="btn relative z-10"
+              className="btn"
               style={{
                 backgroundColor: '#0D0D0D',
                 color: '#FFFFFF',
@@ -423,23 +313,58 @@ export default function AnimatedServices({ services, testimonials, processSteps 
                 borderRadius: '0.5rem',
                 fontWeight: '600'
               }}
-              whileHover={{
-                scale: 1.1,
-                backgroundColor: '#262626',
-                boxShadow: '0 10px 30px rgba(0, 0, 0, 0.5)',
-              }}
-              whileTap={{ scale: 0.95 }}
             >
               Get Your Free Quote
-              <motion.i
-                className="fas fa-arrow-right ml-2"
-                animate={{ x: [0, 5, 0] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              />
-            </motion.a>
-          </motion.div>
+              <i className="fas fa-arrow-right ml-2" />
+            </a>
+          </div>
         </div>
       </section>
+
+      <style>{`
+        .gradient-text {
+          background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+
+        .accent-underline {
+          position: relative;
+          display: inline-block;
+        }
+
+        .accent-underline::after {
+          content: '';
+          position: absolute;
+          bottom: -8px;
+          left: 0;
+          width: 100%;
+          height: 4px;
+          background: var(--gradient-accent);
+          border-radius: 2px;
+        }
+
+        .btn-samples {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0.75rem 1.5rem;
+          border: 2px solid;
+          border-radius: 0.5rem;
+          font-weight: 600;
+          transition: all 0.3s ease;
+          cursor: pointer;
+          text-decoration: none;
+        }
+
+        .card-gradient {
+          background-color: var(--bg-dark-card);
+          padding: 2rem;
+          border-radius: 1rem;
+          transition: transform 0.3s ease;
+        }
+      `}</style>
     </div>
   );
 }

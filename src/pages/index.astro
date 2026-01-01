@@ -4,18 +4,33 @@ import Navigation from '../components/Navigation.astro';
 import Footer from '../components/Footer.astro';
 import AnimatedHero from '../components/AnimatedHero';
 import TabSection from '../components/TabSection';
+
+// Automatically load hero images
+const heroImageModules = import.meta.glob('/public/images/hero/*.{webp,jpg,jpeg,png}', { eager: true });
+const heroImages = Object.keys(heroImageModules)
+  .map(path => path.replace('/public', ''))
+  .sort(); // Sort alphabetically for consistent order
+
+// Automatically load featured images
+const featuredImageModules = import.meta.glob('/public/images/featured/*.{webp,jpg,jpeg,png}', { eager: true });
+const featuredImages = Object.keys(featuredImageModules)
+  .map(path => path.replace('/public', ''))
+  .sort(); // Sort alphabetically for consistent order
+
+console.log(`📸 Auto-detected ${heroImages.length} hero images`);
+console.log(`⭐ Auto-detected ${featuredImages.length} featured images`);
 ---
 
 <Layout title="Tanvay Nama - Professional Photography & Videography">
   <Navigation />
 
   <!-- Animated Hero Section -->
-  <AnimatedHero client:load />
+  <AnimatedHero heroImages={heroImages} client:load />
 
   <!-- Tab-Based Content Section -->
   <section id="content" class="section">
     <div class="container">
-      <TabSection client:load />
+      <TabSection featuredImages={featuredImages} client:load />
     </div>
   </section>
 
