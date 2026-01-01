@@ -2,15 +2,23 @@
 const currentYear = new Date().getFullYear();
 
 const socialLinks = [
-  { name: 'Instagram', icon: 'fab fa-instagram', url: 'https://instagram.com/tanvayphotography' },
-  { name: 'LinkedIn', icon: 'fab fa-linkedin', url: 'https://www.linkedin.com/in/tanvay-nama-369b48198/' },
+  {
+    name: "Instagram",
+    icon: "fab fa-instagram",
+    url: "https://instagram.com/tanvaysphotography",
+  },
+  {
+    name: "LinkedIn",
+    icon: "fab fa-linkedin",
+    url: "https://www.linkedin.com/in/tanvay-nama-369b48198/",
+  },
 ];
 
 const quickLinks = [
-  { name: 'About', path: '/about' },
-  { name: 'Portfolio', path: '/portfolio' },
-  { name: 'Services', path: '/services' },
-  { name: 'Contact', path: '/contact' },
+  { name: "About", path: "/about" },
+  { name: "Portfolio", path: "/portfolio" },
+  { name: "Services", path: "/services" },
+  { name: "Contact", path: "/contact" },
 ];
 ---
 
@@ -24,7 +32,8 @@ const quickLinks = [
           Professional Photography & Videography
         </p>
         <p class="text-sm text-muted">
-          5+ years crafting visual stories for product, fashion, event, and lifestyle clients.
+          5+ years crafting visual stories for product, fashion, event, and
+          lifestyle clients.
         </p>
       </div>
 
@@ -32,13 +41,18 @@ const quickLinks = [
       <div>
         <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
         <ul class="space-y-2">
-          {quickLinks.map((link) => (
-            <li>
-              <a href={link.path} class="text-muted hover:text-accent transition-colors">
-                {link.name}
-              </a>
-            </li>
-          ))}
+          {
+            quickLinks.map((link) => (
+              <li>
+                <a
+                  href={link.path}
+                  class="text-muted hover:text-accent transition-colors"
+                >
+                  {link.name}
+                </a>
+              </li>
+            ))
+          }
         </ul>
       </div>
 
@@ -46,13 +60,25 @@ const quickLinks = [
       <div>
         <h4 class="text-lg font-semibold mb-4">Connect</h4>
         <div class="mb-4 space-y-3">
-          <a href="mailto:tanvayphotography@gmail.com" class="flex items-center text-light hover:text-accent-primary transition-colors group">
+          <a
+            href="mailto:tanvayphotography@gmail.com"
+            class="flex items-center text-light hover:text-accent-primary transition-colors group"
+          >
             <i class="fas fa-envelope mr-3 text-accent-primary"></i>
-            <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">tanvayphotography@gmail.com</span>
+            <span
+              style="font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;"
+              >tanvayphotography@gmail.com</span
+            >
           </a>
-          <a href="tel:+917231952852" class="flex items-center text-light hover:text-accent-primary transition-colors group">
+          <a
+            href="tel:+917231952852"
+            class="flex items-center text-light hover:text-accent-primary transition-colors group"
+          >
             <i class="fas fa-phone mr-3 text-accent-primary"></i>
-            <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;">+91 7231952852</span>
+            <span
+              style="font-family: 'JetBrains Mono', monospace; font-size: 0.9rem;"
+              >+91 7231952852</span
+            >
           </a>
           <p class="flex items-center text-light">
             <i class="fas fa-map-marker-alt mr-3 text-accent-primary"></i>
@@ -62,23 +88,27 @@ const quickLinks = [
 
         <!-- Social Icons -->
         <div class="flex space-x-5">
-          {socialLinks.map((social) => (
-            <a
-              href={social.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="w-10 h-10 rounded-full bg-accent-primary/10 border border-accent-primary/30 flex items-center justify-center text-accent-primary hover:bg-accent-primary hover:text-white transition-all"
-              aria-label={social.name}
-            >
-              <i class={social.icon}></i>
-            </a>
-          ))}
+          {
+            socialLinks.map((social) => (
+              <a
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="w-10 h-10 rounded-full bg-accent-primary/10 border border-accent-primary/30 flex items-center justify-center text-accent-primary hover:bg-accent-primary hover:text-white transition-all"
+                aria-label={social.name}
+              >
+                <i class={social.icon} />
+              </a>
+            ))
+          }
         </div>
       </div>
     </div>
 
     <!-- Copyright -->
-    <div class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-muted">
+    <div
+      class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-muted"
+    >
       <p>&copy; {currentYear} Tanvay Nama. All rights reserved.</p>
     </div>
   </div>
